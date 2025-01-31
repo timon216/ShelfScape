@@ -1,55 +1,54 @@
 package com.shelfscape.config;
 
+import com.shelfscape.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
 
 @Configuration
 public class WebSecurityConfig {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().ignoringRequestMatchers("/login")  // Wyłącz CSRF dla /login
-                .and()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/login").permitAll()  // Pozwól na dostęp do stron publicznych
-                        .anyRequest().authenticated()  // Inne strony wymagają logowania
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/login"))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/home", "/login", "/register").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form
-                        .loginPage("/login")  // Strona logowania
-                        .loginProcessingUrl("/login")  // Proces logowania
-                        .defaultSuccessUrl("/hello", true)  // Domyślne przekierowanie po udanym logowaniu
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("email")
+                        .defaultSuccessUrl("/hello", true)
                         .permitAll()
                 )
-                .logout((logout) -> logout.permitAll());  // Pozwól na wylogowanie
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }
 
-
-
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(List.of(authProvider));
     }
 
     @Bean
