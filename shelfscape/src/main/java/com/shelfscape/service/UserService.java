@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,20 +20,31 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RoleService roleService; // Usługa do zarządzania rolami
+    private RoleService roleService;
 
     public User registerUser(User user) {
-        // Sprawdzamy, czy użytkownik już istnieje
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+        // Check if the user already exists
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email is already in use.");
         }
 
+        // Encrypt the user's password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleService.getRoleByName("USER");
+        // Fetch the USER role and handle Optional
+        Role userRole = roleService.getRoleByName("USER")
+                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+
+        // Assign the role to the user
         user.setRoles(Collections.singleton(userRole));
 
+        // Save the user to the database
         return userRepository.save(user);
+    }
+
+    // Add the findByEmail method to search for users by email
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public String authenticate(User user) {

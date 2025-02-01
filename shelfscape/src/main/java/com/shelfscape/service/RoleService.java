@@ -30,7 +30,7 @@ public class RoleService {
         roleRepository.deleteById(id);
     }
 
-    public Role getRoleByName(String name) {
+    public Optional<Role> getRoleByName(String name) {
         return roleRepository.findByName(name);
     }
 }

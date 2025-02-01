@@ -27,10 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // Log the fetched user details
         System.out.println("User found: " + user.getEmail() + " with roles: " + user.getRoles());
+        System.out.println("User's password: " + user.getPassword());
 
         // Map roles to authorities with 'ROLE_' prefix
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName())) // Ensure ROLE_ prefix
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
@@ -39,4 +40,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 authorities
         );
     }
+
 }

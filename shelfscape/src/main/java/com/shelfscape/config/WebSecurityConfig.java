@@ -26,9 +26,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/login"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/register").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/register").permitAll()  // Allow access to register page
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
