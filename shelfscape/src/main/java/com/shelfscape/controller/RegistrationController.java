@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.validation.Valid;
 
@@ -24,10 +23,7 @@ public class RegistrationController {
     private UserService userService;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository; // Add RoleRepository to fetch the USER role
+    private RoleRepository roleRepository;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -45,9 +41,6 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "register";
         }
-
-        // Encrypt the password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // Fetch the USER role from the database and assign it to the user
         Role userRole = roleRepository.findByName("USER")
