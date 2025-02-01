@@ -11,8 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import jakarta.validation.Valid;
+import org.springframework.validation.ObjectError;
 
 import java.util.Set;
 
@@ -32,10 +32,15 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, String confirmPassword, Model model) {
         // Validate if the email already exists
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.user", "Email already exists");
+        }
+
+        // Validate if the passwords match
+        if (!user.getPassword().equals(confirmPassword)) {
+            bindingResult.rejectValue("password", "error.user", "Passwords do not match");
         }
 
         if (bindingResult.hasErrors()) {
@@ -53,5 +58,4 @@ public class RegistrationController {
         model.addAttribute("message", "User registered successfully!");
         return "login"; // Redirect to login page after registration
     }
-
 }

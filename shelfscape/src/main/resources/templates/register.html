@@ -33,6 +33,12 @@
     </div>
 
     <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
+        <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+    </div>
+
+    <div>
         <button type="submit">Register</button>
     </div>
 
