@@ -1,0 +1,33 @@
+<nav xmlns:th="http://www.w3.org/1999/xhtml" class="main-navbar">
+  <div class="logo">
+    <a href="/">
+      <img class="logo" src="/images/logo-light-2.png" alt="logo">
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li class="catalog-link"><a href="/catalog">Catalog</a></li>
+
+    <!-- If no user is logged in -->
+    <li th:if="${#authorization.expression('isAnonymous()')}">
+      <a href="/login">Login</a>
+    </li>
+    <li th:if="${#authorization.expression('isAnonymous()')}">
+      <a href="/register">Sign Up</a>
+    </li>
+
+    <!-- If user is logged in -->
+    <li th:if="${#authorization.expression('isAuthenticated()')}">
+      <a href="/profile">Profile</a>
+    </li>
+    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+      <a href="/admin">Admin Panel</a>
+    </li>
+    <li th:if="${#authorization.expression('isAuthenticated()')}">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="log-out-btn">Log out</button>
+      </form>
+    </li>
+  </ul>
+</nav>

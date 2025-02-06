@@ -28,6 +28,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register"))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/", "/home", "/login", "/register").permitAll()  // Allow access to register page
                         .anyRequest().authenticated()
                 )
@@ -35,7 +36,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
-                        .defaultSuccessUrl("/hello", true)
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());

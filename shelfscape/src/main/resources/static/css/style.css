@@ -1,0 +1,53 @@
+/* custom navbar */
+.main-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    padding-block: 1rem;
+    padding-inline: 2rem;
+
+    background-color: hsl(213, 28%, 36%);
+}
+
+.logo {
+    max-height: 3rem;
+
+    position: relative;
+}
+
+.nav-links {
+    display: flex;
+    align-content: center;
+    gap: 2rem;
+
+    list-style: none;
+}
+
+.nav-links a {
+    color: hsl(80, 27%, 98%);
+    text-decoration: none;
+}
+
+.catalog-link {
+    margin-right: 2rem;
+}
+
+.log-out-btn {
+    margin-left: 2rem;
+    background: none;
+    border: none;
+    color: hsl(80, 27%, 98%);
+    font-family: "Montserrat", serif;
+    cursor: pointer;
+}
+
+/* general styles */
+body {
+    background-color: hsl(80, 27%, 98%);
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
