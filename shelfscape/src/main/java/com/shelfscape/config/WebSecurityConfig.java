@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/", "/home", "/login", "/register").permitAll()  // Allow access to register page
+                        .requestMatchers("/", "/home", "/login", "/register", "/about").permitAll()  // Allow access to register page
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

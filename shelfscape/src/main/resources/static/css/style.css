@@ -402,3 +402,33 @@ h1, h2, h3, h4, h5 {
         top: 100%;
     }
 }
+
+/* about page */
+.about-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-main  p {
+    margin-block: 1rem;
+    max-width: 60ch;
+}
+
+.about-main > div {
+    width: fit-content;
+}
+
+.about-main li {
+    list-style: none;
+    margin-block: 0.5rem;
+    max-width: 55ch;
+}
+
+.about-main li span {
+    font-weight: 500;
+}
+
+.about-main .info {
+    margin-top: 2rem;
+}

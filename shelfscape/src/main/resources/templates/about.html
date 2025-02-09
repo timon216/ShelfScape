@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
+
+  <main class="wrapper-big about-main">
+
+    <p class="info">ShelfScape connects you with libraries, making it easy to browse, reserve, and borrow books. Partnering with local libraries, we provide a seamless way to check availability and secure your next read.</p>
+
+    <ul>
+      <li><span>📚 Explore Library Collections</span> - Browse books and check real-time availability.</li>
+      <li><span>✅ Reserve with Ease</span> - Secure a book online and pick it up within a few days.</li>
+      <li><span>🔄 Manage Your Loans</span> - Track current loans, reservations, and borrowing history.</li>
+    </ul>
+
+    <div>
+      <h3>Our story</h3>
+      <p>ShelfScape started with a simple idea: making library access effortless in the digital age. What began as a small project quickly grew into a platform designed to bridge the gap between readers and libraries. By working closely with library networks, we've built a system that enhances the way people discover and borrow books.</p>
+      <p>Today, ShelfScape continues to evolve, making reading more accessible, convenient, and enjoyable for everyone.</p>
+    </div>
+
+  </main>
+
+</body>
+</html>
