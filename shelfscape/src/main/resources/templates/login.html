@@ -4,17 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
-<body style="background: red">
-<h2>Login</h2>
-<form th:action="@{/login}" method="post">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required /><br><br>
+<body>
+    <th:block th:replace="~{fragments/navbar}"></th:block>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required /><br><br>
+    <main class="login-main">
+        <h2>Welcome back, book lover!</h2>
+        <p>Log in to your ShelfScape account and pick up where you left off!</p>
 
-    <button type="submit">Login</button>
-</form>
+        <form th:action="@{/login}" method="post" class="form">
+
+            <div class="fieldset">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+
+            <div class="fieldset">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+
+            <button type="submit" class="btn btn-blue login-btn">Login</button>
+        </form>
+        <p>New here? <a href="/register" class="register-link">Create an account</a></p>
+    </main>
+
+    <img src="/images/login-img.png" alt="" class="login-img">
+
 </body>
 </html>
