@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
+
+<h1>Welcome to Admin Dashboard</h1>
+<p>Here you will manage users, books, and other admin functionalities.</p>
+
+<h2>List of Users</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td>
+            <span th:each="role : ${user.roles}" th:text="${role.name}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
