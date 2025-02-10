@@ -32,10 +32,10 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register", "/reserve"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/", "/home", "/login", "/register", "/about").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/register", "/about", "/catalogue").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
