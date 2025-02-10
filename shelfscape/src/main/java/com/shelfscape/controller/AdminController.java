@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -22,8 +25,17 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/dashboard")
-    public String adminDashboard(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    public String adminDashboard(@RequestParam(value = "search", required = false) String searchQuery, Model model) {
+        List<User> users;
+
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            users = userService.searchUsers(searchQuery); // Add search method in UserService
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            users = userService.getAllUsers(); // Default to show all users
+        }
+
+        model.addAttribute("users", users);
         return "admin/dashboard";
     }
 
@@ -46,4 +58,21 @@ public class AdminController {
         userService.save(existingUser);
         return "redirect:/admin/dashboard";
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users")
+    public String viewAllUsers(@RequestParam(value = "search", required = false) String searchQuery, Model model) {
+        List<User> users;
+
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            users = userService.searchUsers(searchQuery);
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            users = userService.getAllUsers();
+        }
+
+        model.addAttribute("users", users);
+        return "admin/users";
+    }
+
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>All Users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,21 +15,17 @@
 <body>
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
-<h1>Welcome to Admin Dashboard</h1>
-<p>Here you will manage users, books, and other admin functionalities.</p>
+<h1>All Users</h1>
+<p>Here you can see all registered users in the system.</p>
 
-
-<h3>Search users</h3>
-<form th:action="@{/admin/dashboard}" method="get">
+<!-- Search Bar -->
+<form th:action="@{/admin/users}" method="get">
     <input type="text" name="search" placeholder="Search users..." th:value="${searchQuery}">
     <button type="submit">Search</button>
 </form>
 
-<div th:if="${users != null and #lists.isEmpty(users) and searchQuery != null}">
-    <p>No user is matching your search</p>
-</div>
-
-<div th:if="${searchQuery != null and not #lists.isEmpty(users)}">
+<!-- Display Table with All Users -->
+<div>
     <table>
         <thead>
         <tr>
@@ -56,7 +52,8 @@
     </table>
 </div>
 
-<p><a th:href="@{/admin/users}">See all users</a></p>
+<!-- Link back to dashboard -->
+<p><a th:href="@{/admin/dashboard}">Back to Dashboard</a></p>
 
 </body>
 </html>
