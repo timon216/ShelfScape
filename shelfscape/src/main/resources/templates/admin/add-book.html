@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
+
+<h1>Add New Book</h1>
+
+<form th:action="@{/admin/books/add}" th:object="${book}" method="post">
+    <label for="title">Title</label>
+    <input type="text" id="title" th:field="*{title}" required />
+    <br/>
+
+    <label for="author">Author</label>
+    <input type="text" id="author" th:field="*{author}" required />
+    <br/>
+
+    <label for="genre">Genre</label>
+    <input type="text" id="genre" th:field="*{genre}" required />
+    <br/>
+
+    <label for="isbn">ISBN</label>
+    <input type="text" id="isbn" th:field="*{isbn}" required pattern="^(?:\d{9}[\dX]|\d{13})$"/>
+    <br/>
+
+    <label for="available">Available</label>
+    <input type="checkbox" id="available" th:field="*{available}" />
+    <br/>
+
+    <button type="submit">Add Book</button>
+</form>
+
+</body>
+</html>
