@@ -1,24 +1,23 @@
 package com.shelfscape.controller;
 
 import com.shelfscape.model.Loan;
+import com.shelfscape.model.LoanStatus;
 import com.shelfscape.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/loans")
+@Controller
+@RequestMapping("/admin/loans")
 public class LoanController {
 
     @Autowired
     private LoanService loanService;
-
-    @GetMapping
-    public List<Loan> getAllLoans() {
-        return loanService.getAllLoans();
-    }
 
     @GetMapping("/{id}")
     public Optional<Loan> getLoanById(@PathVariable Long id) {
@@ -33,5 +32,31 @@ public class LoanController {
     @DeleteMapping("/{id}")
     public void deleteLoan(@PathVariable Long id) {
         loanService.deleteLoan(id);
+    }
+
+    // New endpoint for getting overdue loans
+    @GetMapping("/overdue")
+    public List<Loan> getOverdueLoans() {
+        // This will return only the loans that have the status "OVERDUE"
+        List<Loan> loans = loanService.getAllLoans();
+        return loans.stream()
+                .filter(loan -> loan.getStatus() == LoanStatus.OVERDUE)
+                .toList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/loans")
+    public String manageLoans(Model model) {
+        List<Loan> loans = loanService.getAllLoans();
+        model.addAttribute("loans", loans);
+        return "admin/loans";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public String getAllLoans(Model model) {
+        List<Loan> loans = loanService.getAllLoans();
+        model.addAttribute("loans", loans);
+        return "admin/loans";
     }
 }

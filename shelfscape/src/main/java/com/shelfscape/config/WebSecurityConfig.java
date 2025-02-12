@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.scheduling.annotation.EnableScheduling; // Add this line
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @Configuration
+@EnableScheduling // Enable scheduling for periodic tasks
 public class WebSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;

@@ -21,7 +21,11 @@ public class Loan {
 
     private LocalDate loanDate;
     private LocalDate returnDate;
-    private String status;
+
+    private LocalDate reservationExpiryDate;
+
+    @Enumerated(EnumType.STRING)
+    private LoanStatus status;
 
     // Getters and setters
     public Long getId() {
@@ -59,10 +63,18 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
-    public String getStatus() {
+    public LoanStatus getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public LocalDate getReservationExpiryDate() {
+        return reservationExpiryDate;
+    }
+
+    public void setReservationExpiryDate(LocalDate reservationExpiryDate) {
+        this.reservationExpiryDate = reservationExpiryDate;
     }
 }

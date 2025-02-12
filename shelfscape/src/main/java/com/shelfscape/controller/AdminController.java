@@ -1,8 +1,10 @@
 package com.shelfscape.controller;
 
 import com.shelfscape.model.Book;
+import com.shelfscape.model.Loan;
 import com.shelfscape.model.User;
 import com.shelfscape.service.BookService;
+import com.shelfscape.service.LoanService;
 import com.shelfscape.service.UserService;
 import com.shelfscape.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private LoanService loanService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/dashboard")

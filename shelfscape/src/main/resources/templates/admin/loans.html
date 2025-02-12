@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Loans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
+
+<h1>Manage All Loans</h1>
+
+<h3>All Loans</h3>
+
+<div th:if="${loans != null}">
+  <table>
+    <thead>
+    <tr>
+      <th>Loan ID</th>
+      <th>User</th>
+      <th>Book</th>
+      <th>Status</th>
+      <th>Reservation Expiry</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="loan : ${loans}">
+      <td th:text="${loan.id}"></td>
+      <td th:text="${loan.user.firstName} + ' ' + ${loan.user.lastName}"></td>
+      <td th:text="${loan.book.title}"></td>
+      <td th:text="${loan.status}"></td>
+      <td th:text="${loan.reservationExpiryDate}"></td>
+      <td>
+        <a th:href="@{/admin/loans/edit/{id}(id=${loan.id})}" class="btn btn-primary">Edit</a>
+        <a th:href="@{/admin/loans/delete/{id}(id=${loan.id})}" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<p><a th:href="@{/admin/dashboard}">Back to Dashboard</a></p>
+
+</body>
+</html>
