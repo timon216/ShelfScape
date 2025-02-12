@@ -37,7 +37,6 @@ public class LoanController {
     // New endpoint for getting overdue loans
     @GetMapping("/overdue")
     public List<Loan> getOverdueLoans() {
-        // This will return only the loans that have the status "OVERDUE"
         List<Loan> loans = loanService.getAllLoans();
         return loans.stream()
                 .filter(loan -> loan.getStatus() == LoanStatus.OVERDUE)
@@ -58,5 +57,17 @@ public class LoanController {
         List<Loan> loans = loanService.getAllLoans();
         model.addAttribute("loans", loans);
         return "admin/loans";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/status")
+    public String updateLoanStatus(@PathVariable Long id, @RequestParam LoanStatus status, Model model) {
+        Optional<Loan> optionalLoan = loanService.getLoanById(id);
+        if (optionalLoan.isPresent()) {
+            Loan loan = optionalLoan.get();
+            loan.setStatus(status);
+            loanService.saveLoan(loan);
+        }
+        return "redirect:/admin/loans";
     }
 }

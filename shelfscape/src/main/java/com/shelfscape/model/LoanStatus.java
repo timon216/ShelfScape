@@ -4,5 +4,6 @@ public enum LoanStatus {
     RESERVED,
     BORROWED,
     RETURNED,
-    OVERDUE
+    OVERDUE,
+    RESERVATION_EXPIRED // More explicit name
 }

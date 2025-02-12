@@ -1,14 +1,18 @@
 package com.shelfscape.service;
 
 import com.shelfscape.model.Book;
+import com.shelfscape.model.Loan;
+import com.shelfscape.model.LoanStatus;
 import com.shelfscape.model.User;
 import com.shelfscape.repository.BookRepository;
+import com.shelfscape.repository.LoanRepository;
 import com.shelfscape.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,9 @@ public class BookService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LoanRepository loanRepository;
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -57,6 +64,19 @@ public class BookService {
 
         book.setAvailable(false);
         bookRepository.save(book);
+
+        // Create a new loan for the reservation
+        Loan loan = new Loan();
+        loan.setUser(user);
+        loan.setBook(book);
+        loan.setLoanDate(LocalDate.now());
+        loan.setStatus(LoanStatus.RESERVED);
+
+        // Setting reservation expiry date (7 days from now)
+        loan.setReservationExpiryDate(LocalDate.now().plusDays(7));
+
+        loanRepository.save(loan);
     }
+
 
 }

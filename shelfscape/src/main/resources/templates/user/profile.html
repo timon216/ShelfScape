@@ -1,8 +1,9 @@
+<!-- src/main/resources/templates/user/profile.html -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Book Catalogue</title>
+    <title>User Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
@@ -16,35 +17,25 @@
 <body>
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
-<h1>Book Catalogue</h1>
+<h1>Welcome, <span th:text="${user.firstName}">User</span>!</h1>
 
-<div th:if="${error}" class="alert alert-danger">
-    <p th:text="${error}"></p>
-</div>
+<h2>Your Profile:</h2>
+<p>Email: <span th:text="${user.email}"></span></p>
+<p>First Name: <span th:text="${user.firstName}"></span></p>
+<p>Last Name: <span th:text="${user.lastName}"></span></p>
 
+<h3>Your Loans:</h3>
 <table>
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Genre</th>
-        <th>ISBN</th>
-        <th th:if="${isLoggedIn}">Status</th>
-        <th th:if="${isLoggedIn}">Actions</th>
+        <th>Book Title</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.author}"></td>
-        <td th:text="${book.genre}"></td>
-        <td th:text="${book.isbn}"></td>
-        <td th:if="${isLoggedIn}" th:text="${book.available ? 'Available' : 'Not Available'}"></td>
-        <td th:if="${isLoggedIn}">
-            <form th:action="@{/books/reserve/{id}(id=${book.id})}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-primary">Reserve</button>
-            </form>
-        </td>
+    <tr th:each="loan : ${loans}">
+        <td th:text="${loan.book.title}"></td>
+        <td th:text="${loan.status}"></td>
     </tr>
     </tbody>
 </table>

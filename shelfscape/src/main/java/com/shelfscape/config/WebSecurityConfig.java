@@ -61,7 +61,7 @@ public class WebSecurityConfig {
             if (roles.contains("ROLE_ADMIN")) { // Ensure proper role prefix
                 response.sendRedirect("/admin/dashboard");
             } else {
-                response.sendRedirect("/home");
+                response.sendRedirect("/user/profile");
             }
         };
     }

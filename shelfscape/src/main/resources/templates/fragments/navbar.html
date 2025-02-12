@@ -19,7 +19,7 @@
 
     <!-- If user is logged in -->
     <li th:if="${#authorization.expression('isAuthenticated()')}">
-      <a href="/profile">Profile</a>
+      <a href="/user/profile">Profile</a>
     </li>
     <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
       <a href="/admin/dashboard">Admin Panel</a>

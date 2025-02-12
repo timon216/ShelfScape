@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,12 +20,17 @@ public class BookCatalogueController {
     private BookService bookService;
 
     @GetMapping
-    public String viewCatalogue(Model model, Authentication authentication) {
+    public String viewCatalogue(@RequestParam(value = "error", required = false) String error, Model model, Authentication authentication) {
+
         List<Book> books = bookService.getAllBooks();
         boolean isLoggedIn = authentication != null && authentication.isAuthenticated();
 
         model.addAttribute("books", books);
         model.addAttribute("isLoggedIn", isLoggedIn);
+
+        if (error != null) {
+            model.addAttribute("error", error);
+        }
 
         return "catalogue";
     }

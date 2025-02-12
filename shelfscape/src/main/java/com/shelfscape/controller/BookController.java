@@ -5,7 +5,9 @@ import com.shelfscape.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/books")
@@ -25,14 +27,16 @@ public class BookController {
     }
 
     @PostMapping("/reserve/{id}")
-    public String reserveBook(@PathVariable Long id) {
+    public String reserveBook(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             bookService.reserveBook(id);
-            return "redirect:/catalogue"; // Redirect to the catalogue page after successful reservation
+            return "redirect:/catalogue";
         } catch (Exception e) {
-            return "redirect:/catalogue?error=" + e.getMessage(); // Redirect to catalogue with error message if there's an issue
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/catalogue";
         }
     }
+
 
     @PostMapping
     public String addBook(@RequestBody Book book) {

@@ -25,9 +25,16 @@ public class LoanService {
         return loanRepository.findById(id);
     }
 
+    public List<Loan> getLoansByStatus(LoanStatus status) {
+        return loanRepository.findByStatus(status);
+    }
+
+    public List<Loan> getLoansByUser(Long userId) {
+        return loanRepository.findByUserId(userId);
+    }
+
     public Loan saveLoan(Loan loan) {
         if (loan.getStatus() == LoanStatus.RESERVED) {
-            // Set the reservation expiry date to 7 days from the loan date
             loan.setReservationExpiryDate(loan.getLoanDate().plusDays(7));
         }
         return loanRepository.save(loan);
@@ -37,15 +44,20 @@ public class LoanService {
         loanRepository.deleteById(id);
     }
 
-    // Keep only one definition of this method
-    @Scheduled(cron = "0 0 0 * * ?")  // This will run at midnight every day
+    public Loan updateLoanStatus(Long loanId, LoanStatus status) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new IllegalArgumentException("Loan not found"));
+        loan.setStatus(status);
+        return loanRepository.save(loan);
+    }
+
+
+    @Scheduled(cron = "0 0 0 * * ?")  // Runs at midnight every day
     public void checkAndUpdateExpiredLoans() {
         List<Loan> loans = loanRepository.findAll();
 
         for (Loan loan : loans) {
             if (loan.getStatus() == LoanStatus.RESERVED && loan.getReservationExpiryDate().isBefore(LocalDate.now())) {
-                // If the reservation has expired, mark it as OVERDUE
-                loan.setStatus(LoanStatus.OVERDUE);
+                loan.setStatus(LoanStatus.RESERVATION_EXPIRED);
                 loanRepository.save(loan);
             }
         }
