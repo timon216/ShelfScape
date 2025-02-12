@@ -67,14 +67,17 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/books/edit/{id}")
-    public String updateBook(@PathVariable Long id, Book book) {
+    public String updateBook(@PathVariable Long id, @ModelAttribute Book book, @RequestParam(defaultValue = "false") boolean available) {
         Book existingBook = bookService.getBookById(id).orElseThrow(() -> new RuntimeException("Book not found"));
         existingBook.setTitle(book.getTitle());
         existingBook.setAuthor(book.getAuthor());
         existingBook.setGenre(book.getGenre());
+        existingBook.setIsbn(book.getIsbn());
+        existingBook.setAvailable(available);
         bookService.saveBook(existingBook);
-        return "redirect:/admin/dashboard";
+        return "redirect:/admin/books";
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/books/add")
