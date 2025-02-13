@@ -61,7 +61,6 @@ public class AdminController {
         return "admin/dashboard";
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/books/edit/{id}")
     public String editBook(@PathVariable Long id, Model model) {
@@ -82,7 +81,6 @@ public class AdminController {
         bookService.saveBook(existingBook);
         return "redirect:/admin/books";
     }
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/books/add")
@@ -111,6 +109,40 @@ public class AdminController {
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return "redirect:/admin/books";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users")
+    public String viewAllUsers(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "admin/users";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users/edit/{id}")
+    public String editUser(@PathVariable Long id, Model model) {
+        User user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getAllRoles()); // Add roles to the model for dropdown
+        return "admin/edit-user";
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/users/edit/{id}")
+    public String updateUser(@PathVariable Long id, User user) {
+        User existingUser = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setRoles(user.getRoles()); // Update roles if necessary
+        userService.save(existingUser);
+        return "redirect:/admin/dashboard";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin/users";
     }
 }
 
