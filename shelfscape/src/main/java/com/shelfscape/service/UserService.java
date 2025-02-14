@@ -65,7 +65,7 @@ public class UserService {
     }
 
     public List<User> searchUsers(String searchQuery) {
-        return userRepository.findByEmailContainingOrFirstNameContainingOrLastNameContaining(searchQuery, searchQuery, searchQuery);
+        return userRepository.findByEmailContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(searchQuery, searchQuery, searchQuery);
     }
 
     public void deleteUser(Long id) {

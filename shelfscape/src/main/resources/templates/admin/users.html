@@ -24,6 +24,10 @@
     <button type="submit">Search</button>
 </form>
 
+<div th:if="${users != null and #lists.isEmpty(users) and searchQuery != null}">
+    <p>No user is matching your search</p>
+</div>
+
 <!-- Display Table with All Users -->
 <div>
     <table>

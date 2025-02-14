@@ -96,13 +96,6 @@ public class AdminController {
         return "redirect:/admin/books";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin/books")
-    public String viewAllBooks(Model model) {
-        List<Book> books = bookService.getAllBooks();
-        model.addAttribute("books", books);
-        return "admin/books";
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/books/delete/{id}")
@@ -111,13 +104,6 @@ public class AdminController {
         return "redirect:/admin/books";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin/users")
-    public String viewAllUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        return "admin/users";
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/users/edit/{id}")
@@ -127,6 +113,7 @@ public class AdminController {
         model.addAttribute("roles", roleService.getAllRoles()); // Add roles to the model for dropdown
         return "admin/edit-user";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/users/edit/{id}")
     public String updateUser(@PathVariable Long id, User user) {
@@ -143,6 +130,34 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin/users";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users")
+    public String viewAllUsers(@RequestParam(value = "search", required = false) String searchQuery, Model model) {
+        List<User> users;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            users = userService.searchUsers(searchQuery);
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            users = userService.getAllUsers();
+        }
+        model.addAttribute("users", users);
+        return "admin/users";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/books")
+    public String viewAllBooks(@RequestParam(value = "search", required = false) String searchQuery, Model model) {
+        List<Book> books;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            books = bookService.searchBooks(searchQuery);
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            books = bookService.getAllBooks();
+        }
+        model.addAttribute("books", books);
+        return "admin/books";
     }
 }
 
