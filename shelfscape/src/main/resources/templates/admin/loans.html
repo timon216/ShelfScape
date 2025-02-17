@@ -33,7 +33,7 @@
       <th>User</th>
       <th>Book</th>
       <th>Status</th>
-      <th>Reservation Expiry</th>
+      <th>Due Date</th>
       <th>Actions</th>
     </tr>
     </thead>
@@ -43,14 +43,48 @@
       <td th:text="${loan.user.firstName} + ' ' + ${loan.user.lastName}"></td>
       <td th:text="${loan.book.title}"></td>
       <td th:text="${loan.status}"></td>
-      <td th:text="${loan.reservationExpiryDate}"></td>
       <td>
-        <a th:href="@{/admin/loans/edit/{id}(id=${loan.id})}" class="btn btn-primary">Edit</a>
-        <a th:href="@{/admin/loans/delete/{id}(id=${loan.id})}" class="btn btn-danger">Delete</a>
+        <span th:text="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED ? loan.reservationExpiryDate :
+                        (loan.status == T(com.shelfscape.model.LoanStatus).BORROWED ? loan.returnDate : '')}"></span>
+      </td>
+      <td>
+        <!-- Change Status to BORROWED -->
+        <form th:if="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED}"
+              th:action="@{/admin/loans/updateStatus}" method="post">
+          <input type="hidden" name="loanId" th:value="${loan.id}" />
+          <input type="hidden" name="status" value="BORROWED" />
+          <input type="hidden" name="redirectUrl" value="/admin/loans">
+          <button type="submit" class="btn btn-success">Mark as Borrowed</button>
+        </form>
+
+        <!-- Change Status to RETURNED -->
+        <form th:if="${loan.status == T(com.shelfscape.model.LoanStatus).BORROWED}"
+              th:action="@{/admin/loans/updateStatus}" method="post">
+          <input type="hidden" name="loanId" th:value="${loan.id}" />
+          <input type="hidden" name="status" value="RETURNED" />
+          <input type="hidden" name="redirectUrl" value="/admin/loans">
+          <button type="submit" class="btn btn-warning">Mark as Returned</button>
+        </form>
+
+        <!-- Extend Due Date by 7 Days -->
+        <form th:if="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED or loan.status == T(com.shelfscape.model.LoanStatus).BORROWED}"
+              th:action="@{/admin/loans/extend}" method="post">
+          <input type="hidden" name="loanId" th:value="${loan.id}" />
+          <input type="hidden" name="redirectUrl" value="/admin/loans">
+          <button type="submit" class="btn btn-info">Extend by 7 Days</button>
+        </form>
+
+        <!-- Delete Loan -->
+        <form th:action="@{/admin/loans/delete/{id}(id=${loan.id})}" method="post" style="display:inline;">
+          <input type="hidden" name="redirectUrl" value="/admin/loans">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this loan?');">Delete</button>
+        </form>
+
       </td>
     </tr>
     </tbody>
   </table>
+
 </div>
 
 <p><a th:href="@{/admin/dashboard}">Back to Dashboard</a></p>

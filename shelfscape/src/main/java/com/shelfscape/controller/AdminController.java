@@ -9,11 +9,13 @@ import com.shelfscape.service.LoanService;
 import com.shelfscape.service.UserService;
 import com.shelfscape.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -212,4 +214,37 @@ public class AdminController {
                 .filter(loan -> loan.getStatus() == LoanStatus.OVERDUE)
                 .toList();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/loans/updateStatus")
+    public String updateLoanStatus(@RequestParam Long loanId, @RequestParam LoanStatus status, @RequestParam String redirectUrl) {
+        loanService.updateLoanStatus(loanId, status);
+        return "redirect:" + redirectUrl;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/loans/extend")
+    public String extendLoan(@RequestParam Long loanId, @RequestParam String redirectUrl) {
+        loanService.extendLoan(loanId);
+        return "redirect:" + redirectUrl;
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/loans/delete/{id}")
+    public String deleteLoan(@PathVariable Long id, @RequestParam String redirectUrl) {
+        Loan loan = loanService.getLoanById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
+
+        // Make the book available again if the loan was either BORROWED or RESERVED
+        if (loan.getStatus() == LoanStatus.BORROWED || loan.getStatus() == LoanStatus.RESERVED) {
+            Book book = loan.getBook();
+            book.setAvailable(true);
+            bookService.saveBook(book);
+        }
+
+        loanService.deleteLoan(id);
+        return "redirect:" + redirectUrl;
+    }
+
+
 }

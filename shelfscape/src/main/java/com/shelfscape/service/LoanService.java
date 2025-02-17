@@ -56,7 +56,20 @@ public class LoanService {
     public Loan updateLoanStatus(Long loanId, LoanStatus status) {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new IllegalStateException("Loan not found with ID: " + loanId));
-        loan.setStatus(status);
+
+        if (status == LoanStatus.BORROWED && loan.getStatus() == LoanStatus.RESERVED) {
+            // Change status to borrowed and extend the loan date by 30 days
+            loan.setStatus(LoanStatus.BORROWED);
+            loan.setLoanDate(LocalDate.now());
+            loan.setReturnDate(LocalDate.now().plusDays(30));
+        } else if (status == LoanStatus.RETURNED && loan.getStatus() == LoanStatus.BORROWED) {
+            // Change status to returned and make the book available again
+            loan.setStatus(LoanStatus.RETURNED);
+            Book book = loan.getBook();
+            book.setAvailable(true);
+            bookRepository.save(book);
+        }
+
         return loanRepository.save(loan);
     }
 
@@ -85,5 +98,18 @@ public class LoanService {
             return loan;
         }
         return null;
+    }
+
+    public Loan extendLoan(Long loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new IllegalStateException("Loan not found"));
+
+        if (loan.getStatus() == LoanStatus.RESERVED) {
+            loan.setReservationExpiryDate(loan.getReservationExpiryDate().plusDays(7));
+        } else if (loan.getStatus() == LoanStatus.BORROWED) {
+            loan.setReturnDate(loan.getReturnDate().plusDays(7));
+        }
+
+        return loanRepository.save(loan);
     }
 }
