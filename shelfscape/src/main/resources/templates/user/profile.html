@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
 <h1>Welcome, <span th:text="${user.firstName}">User</span>!</h1>
@@ -22,6 +23,7 @@
         <th>Book Title</th>
         <th>Status</th>
         <th>Reservation Expiry</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +31,11 @@
         <td th:text="${loan.book.title}"></td>
         <td th:text="${loan.status}"></td>
         <td th:text="${loan.reservationExpiryDate}"></td>
+        <td>
+            <form th:action="@{/user/remove-loan/{loanId}(loanId=${loan.id})}" method="post">
+                <button type="submit" th:if="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED}">Remove Reservation</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

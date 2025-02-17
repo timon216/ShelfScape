@@ -8,6 +8,7 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByStatus(LoanStatus status);
     List<Loan> findByUserId(Long userId);
+    Loan findByIdAndUserId(Long loanId, Long userId);
 
     List<Loan> findByBookTitleContainingIgnoreCaseOrBookAuthorContainingIgnoreCaseOrBookIsbnContainingIgnoreCaseOrUserFirstNameContainingIgnoreCaseOrUserLastNameContainingIgnoreCase(
             String title, String author, String isbn, String userfirstname, String userlastname);

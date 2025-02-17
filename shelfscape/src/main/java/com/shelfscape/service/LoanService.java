@@ -3,6 +3,7 @@ package com.shelfscape.service;
 import com.shelfscape.model.Book;
 import com.shelfscape.model.Loan;
 import com.shelfscape.model.LoanStatus;
+import com.shelfscape.repository.BookRepository;
 import com.shelfscape.repository.LoanRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
 
-    public LoanService(LoanRepository loanRepository) {
+    public LoanService(LoanRepository loanRepository, BookRepository bookRepository) {
         this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
     }
 
     public List<Loan> getAllLoans() {
@@ -68,5 +71,19 @@ public class LoanService {
                     loan.setStatus(LoanStatus.RESERVATION_EXPIRED);
                     loanRepository.save(loan);
                 });
+    }
+
+    public Loan removeReservation(Long loanId, Long userId) {
+        Loan loan = loanRepository.findById(loanId).orElse(null);
+        if (loan != null && loan.getUser().getId().equals(userId) && loan.getStatus() == LoanStatus.RESERVED) {
+
+            Book book = loan.getBook();
+            book.setAvailable(true);
+            bookRepository.save(book);
+
+            loanRepository.delete(loan);
+            return loan;
+        }
+        return null;
     }
 }

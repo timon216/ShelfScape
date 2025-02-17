@@ -49,4 +49,19 @@ public class UserController {
 
         return "user/profile";
     }
+
+    @PostMapping("/remove-loan/{loanId}")
+    public String removeLoan(@PathVariable Long loanId) {
+        UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = currentUser.getUsername();
+
+        User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        Loan loan = loanService.removeReservation(loanId, user.getId());
+
+        if (loan != null) {
+            return "redirect:/user/profile";
+        }
+
+        return "error";
+    }
 }
