@@ -1,18 +1,9 @@
-<!-- src/main/resources/templates/user/profile.html -->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 <th:block th:replace="~{fragments/navbar}"></th:block>
@@ -30,12 +21,14 @@
     <tr>
         <th>Book Title</th>
         <th>Status</th>
+        <th>Reservation Expiry</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="loan : ${loans}">
         <td th:text="${loan.book.title}"></td>
         <td th:text="${loan.status}"></td>
+        <td th:text="${loan.reservationExpiryDate}"></td>
     </tr>
     </tbody>
 </table>

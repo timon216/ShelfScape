@@ -38,17 +38,15 @@ public class UserController {
 
     @GetMapping("/profile")
     public String userProfile(Model model) {
-        // Get the current authenticated user
         UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = currentUser.getUsername(); // Assuming email is the username used for login
+        String email = currentUser.getUsername();
 
-        // Retrieve the user and their loans
         User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        List<Loan> loans = loanService.getAllLoans(); // Assuming you want to show all loans for now, you can filter by user if needed
+        List<Loan> loans = loanService.getLoansByUser(user.getId());
 
         model.addAttribute("user", user);
         model.addAttribute("loans", loans);
 
-        return "user/profile"; // Return the profile view
+        return "user/profile";
     }
 }
