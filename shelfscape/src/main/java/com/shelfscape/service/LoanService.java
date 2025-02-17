@@ -1,12 +1,11 @@
 package com.shelfscape.service;
 
+import com.shelfscape.model.Book;
 import com.shelfscape.model.Loan;
 import com.shelfscape.model.LoanStatus;
 import com.shelfscape.repository.LoanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Service
 public class LoanService {
 
-    @Autowired
-    private LoanRepository loanRepository;
+    private final LoanRepository loanRepository;
+
+    public LoanService(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
+    }
 
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
@@ -44,22 +46,27 @@ public class LoanService {
         loanRepository.deleteById(id);
     }
 
+    public List<Loan> searchLoans(String query) {
+        return loanRepository.findByBookTitleContainingIgnoreCaseOrBookAuthorContainingIgnoreCaseOrBookIsbnContainingIgnoreCaseOrUserFirstNameContainingIgnoreCaseOrUserLastNameContainingIgnoreCase(query, query, query, query, query);
+    }
+
     public Loan updateLoanStatus(Long loanId, LoanStatus status) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new IllegalArgumentException("Loan not found"));
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new IllegalStateException("Loan not found with ID: " + loanId));
         loan.setStatus(status);
         return loanRepository.save(loan);
     }
 
-
-    @Scheduled(cron = "0 0 0 * * ?")  // Runs at midnight every day
+    @Scheduled(cron = "0 0 0 * * ?") // Runs at midnight every day
     public void checkAndUpdateExpiredLoans() {
-        List<Loan> loans = loanRepository.findAll();
+        List<Loan> reservedLoans = loanRepository.findByStatus(LoanStatus.RESERVED);
+        LocalDate today = LocalDate.now();
 
-        for (Loan loan : loans) {
-            if (loan.getStatus() == LoanStatus.RESERVED && loan.getReservationExpiryDate().isBefore(LocalDate.now())) {
-                loan.setStatus(LoanStatus.RESERVATION_EXPIRED);
-                loanRepository.save(loan);
-            }
-        }
+        reservedLoans.stream()
+                .filter(loan -> loan.getReservationExpiryDate().isBefore(today))
+                .forEach(loan -> {
+                    loan.setStatus(LoanStatus.RESERVATION_EXPIRED);
+                    loanRepository.save(loan);
+                });
     }
 }

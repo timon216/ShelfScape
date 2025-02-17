@@ -16,7 +16,16 @@
 
 <h3>All Loans</h3>
 
-<div th:if="${loans != null}">
+<form th:action="@{/admin/loans}" method="get">
+  <input type="text" name="search" placeholder="Search loans..." th:value="${searchQuery}">
+  <button type="submit">Search</button>
+</form>
+
+<div th:if="${loans != null and #lists.isEmpty(loans) and searchQuery != null}">
+  <p>No loan is matching your search</p>
+</div>
+
+<div>
   <table>
     <thead>
     <tr>

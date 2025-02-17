@@ -2,6 +2,7 @@ package com.shelfscape.controller;
 
 import com.shelfscape.model.Book;
 import com.shelfscape.model.Loan;
+import com.shelfscape.model.LoanStatus;
 import com.shelfscape.model.User;
 import com.shelfscape.service.BookService;
 import com.shelfscape.service.LoanService;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AdminController {
@@ -35,32 +37,41 @@ public class AdminController {
     public String adminDashboard(
             @RequestParam(value = "userSearch", required = false) String userSearchQuery,
             @RequestParam(value = "bookSearch", required = false) String bookSearchQuery,
+            @RequestParam(value = "loanSearch", required = false) String loanSearchQuery,
             Model model) {
 
         List<User> users;
         List<Book> books;
+        List<Loan> loans;
 
-        // Search for users
         if (userSearchQuery != null && !userSearchQuery.isEmpty()) {
-            users = userService.searchUsers(userSearchQuery); // Add search method in UserService
+            users = userService.searchUsers(userSearchQuery);
             model.addAttribute("userSearchQuery", userSearchQuery);
         } else {
-            users = userService.getAllUsers(); // Default to show all users
+            users = userService.getAllUsers();
         }
 
-        // Search for books
         if (bookSearchQuery != null && !bookSearchQuery.isEmpty()) {
-            books = bookService.searchBooks(bookSearchQuery); // Add search method in BookService
+            books = bookService.searchBooks(bookSearchQuery);
             model.addAttribute("bookSearchQuery", bookSearchQuery);
         } else {
-            books = bookService.getAllBooks(); // Default to show all books
+            books = bookService.getAllBooks();
+        }
+
+        if (loanSearchQuery != null && !loanSearchQuery.isEmpty()) {
+            loans = loanService.searchLoans(loanSearchQuery);
+            model.addAttribute("loanSearchQuery", loanSearchQuery);
+        } else {
+            loans = loanService.getAllLoans();
         }
 
         model.addAttribute("users", users);
         model.addAttribute("books", books);
+        model.addAttribute("loans", loans);
         return "admin/dashboard";
     }
 
+    // Book-related methods
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/books/edit/{id}")
     public String editBook(@PathVariable Long id, Model model) {
@@ -96,7 +107,6 @@ public class AdminController {
         return "redirect:/admin/books";
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/books/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
@@ -104,7 +114,7 @@ public class AdminController {
         return "redirect:/admin/books";
     }
 
-
+    // User-related methods
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/users/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
@@ -120,7 +130,7 @@ public class AdminController {
         User existingUser = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setRoles(user.getRoles()); // Update roles if necessary
+        existingUser.setRoles(user.getRoles());
         userService.save(existingUser);
         return "redirect:/admin/dashboard";
     }
@@ -159,5 +169,47 @@ public class AdminController {
         model.addAttribute("books", books);
         return "admin/books";
     }
-}
 
+
+    // loans-related methods
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/loans")
+    public String viewAllLoans(@RequestParam(value = "search", required = false) String searchQuery, Model model) {
+        List<Loan> loans;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            loans = loanService.searchLoans(searchQuery);
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            loans = loanService.getAllLoans();
+        }
+        model.addAttribute("loans", loans);
+        return "admin/loans";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/loans/{id}")
+    public Optional<Loan> getLoanById(@PathVariable Long id) {
+        return loanService.getLoanById(id);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/admin/loans/{id}/status")
+    public String updateLoanStatus(@PathVariable Long id, @RequestParam LoanStatus status, Model model) {
+        Optional<Loan> optionalLoan = loanService.getLoanById(id);
+        if (optionalLoan.isPresent()) {
+            Loan loan = optionalLoan.get();
+            loan.setStatus(status);
+            loanService.saveLoan(loan);
+        }
+        return "redirect:/admin/loans";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/loans/overdue")
+    public List<Loan> getOverdueLoans() {
+        List<Loan> loans = loanService.getAllLoans();
+        return loans.stream()
+                .filter(loan -> loan.getStatus() == LoanStatus.OVERDUE)
+                .toList();
+    }
+}
