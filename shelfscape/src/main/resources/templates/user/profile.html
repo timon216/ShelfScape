@@ -22,7 +22,7 @@
     <tr>
         <th>Book Title</th>
         <th>Status</th>
-        <th>Reservation Expiry</th>
+        <th>Due date</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -30,7 +30,10 @@
     <tr th:each="loan : ${loans}">
         <td th:text="${loan.book.title}"></td>
         <td th:text="${loan.status}"></td>
-        <td th:text="${loan.reservationExpiryDate}"></td>
+        <td>
+        <span th:text="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED ? loan.reservationExpiryDate :
+                        (loan.status == T(com.shelfscape.model.LoanStatus).BORROWED ? loan.returnDate : '')}"></span>
+        </td>
         <td>
             <form th:action="@{/user/remove-loan/{loanId}(loanId=${loan.id})}" method="post">
                 <button type="submit" th:if="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED}">Remove Reservation</button>
