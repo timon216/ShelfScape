@@ -16,34 +16,25 @@ import java.util.List;
 @RequestMapping("/catalogue")
 public class BookCatalogueController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    public BookCatalogueController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping
-    public String viewCatalogue(@RequestParam(value = "search", required = false) String searchQuery,
-                                @RequestParam(value = "error", required = false) String error,
-                                Model model,
-                                Authentication authentication) {
-
-        List<Book> books;
-
-        // If search query is provided, filter books
-        if (searchQuery != null && !searchQuery.isEmpty()) {
-            books = bookService.searchBooks(searchQuery);
-            model.addAttribute("searchQuery", searchQuery);
-        } else {
-            books = bookService.getAllBooks();
-        }
-
-        boolean isLoggedIn = authentication != null && authentication.isAuthenticated();
+    public String showCatalogue(@RequestParam(required = false) String search,
+                                @RequestParam(required = false) List<String> genres,
+                                Model model) {
+        List<Book> books = bookService.searchAndFilterByGenres(search, genres);
+        List<String> allGenres = bookService.getAllGenres();
 
         model.addAttribute("books", books);
-        model.addAttribute("isLoggedIn", isLoggedIn);
-
-        if (error != null) {
-            model.addAttribute("error", error);
-        }
+        model.addAttribute("searchQuery", search);
+        model.addAttribute("allGenres", allGenres);
+        model.addAttribute("genres", genres);
 
         return "catalogue";
     }
 }
+

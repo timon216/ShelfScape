@@ -85,4 +85,31 @@ public class BookService {
         loanRepository.save(loan);
     }
 
+    public List<Book> filterBooksByGenres(List<String> genres) {
+        return bookRepository.findByGenreIn(genres);
+    }
+
+    public List<Book> searchAndFilterByGenres(String searchQuery, List<String> genres) {
+        if (searchQuery != null && !searchQuery.isBlank() && genres != null && !genres.isEmpty()) {
+            return bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrIsbnContainingIgnoreCaseAndGenreIn(
+                    searchQuery, searchQuery, searchQuery, genres);
+        }
+
+        if (searchQuery != null && !searchQuery.isBlank()) {
+            return bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrIsbnContainingIgnoreCase(
+                    searchQuery, searchQuery, searchQuery);
+        }
+
+        if (genres != null && !genres.isEmpty()) {
+            return bookRepository.findByGenreIn(genres);
+        }
+
+        return bookRepository.findAll();
+    }
+
+    public List<String> getAllGenres() {
+        return bookRepository.findDistinctGenres();
+    }
+
+
 }

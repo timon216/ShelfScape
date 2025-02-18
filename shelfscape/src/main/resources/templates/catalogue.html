@@ -18,15 +18,25 @@
 
 <h1>Book Catalogue</h1>
 
-<!-- Search Form -->
+<h3>Search for a book by title, author or ISBN:</h3>
 <form th:action="@{/catalogue}" method="get">
     <input type="text" name="search" placeholder="Search books..." th:value="${searchQuery}">
     <button type="submit">Search</button>
 </form>
 
-<div th:if="${books != null and #lists.isEmpty(books) and searchQuery != null}">
-    <p>No book is matching your search</p>
+<div>
+    <h3>or filter books by genres and find something interesting:</h3>
+    <form th:action="@{/catalogue}" method="get">
+        <div th:each="genre : ${allGenres}">
+            <label>
+                <input type="checkbox" name="genres" th:value="${genre}" th:checked="${genres != null and genres.contains(genre)}">
+                <span th:text="${genre}"></span>
+            </label>
+        </div>
+        <button type="submit">Apply Filters</button>
+    </form>
 </div>
+
 
 <table>
     <thead>
