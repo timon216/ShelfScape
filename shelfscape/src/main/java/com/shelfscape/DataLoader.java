@@ -1,12 +1,19 @@
 package com.shelfscape;
 
 import com.shelfscape.model.Role;
+import com.shelfscape.service.BookImportService;
 import com.shelfscape.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class DataLoader implements CommandLineRunner {
+
+    @Autowired
+    private BookImportService bookImportService;
 
     private final RoleService roleService;
 
@@ -28,6 +35,13 @@ public class DataLoader implements CommandLineRunner {
             Role adminRole = new Role();
             adminRole.setName("ADMIN");
             roleService.saveRole(adminRole);
+        }
+
+        try {
+            bookImportService.importBooksFromCSV();
+            System.out.println("Books have been imported successfully.");
+        } catch (IOException e) {
+            System.err.println("Error importing books: " + e.getMessage());
         }
     }
 }
