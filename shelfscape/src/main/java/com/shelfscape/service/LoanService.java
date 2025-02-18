@@ -3,6 +3,7 @@ package com.shelfscape.service;
 import com.shelfscape.model.Book;
 import com.shelfscape.model.Loan;
 import com.shelfscape.model.LoanStatus;
+import com.shelfscape.model.User;
 import com.shelfscape.repository.BookRepository;
 import com.shelfscape.repository.LoanRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -117,4 +118,7 @@ public class LoanService {
         return loanRepository.findByUserId(userId);
     }
 
+    public long countLoansByUserAndStatus(User user, LoanStatus status) {
+        return loanRepository.countByUserAndStatus(user, status);
+    }
 }

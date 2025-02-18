@@ -28,6 +28,9 @@ public class BookService {
     @Autowired
     private LoanRepository loanRepository;
 
+    @Autowired
+    private UserService userService;
+
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
@@ -55,6 +58,10 @@ public class BookService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (!userService.canReserveOrBorrow(user)) {
+            throw new RuntimeException("You can only reserve or borrow a maximum of 6 books at the same time.");
+        }
+
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -62,7 +69,7 @@ public class BookService {
             throw new RuntimeException("Book is already reserved.");
         }
 
-        book.setAvailable(false);
+        book.setAvailable(false);  // Mark the book as unavailable since it's being reserved
         bookRepository.save(book);
 
         // Create a new loan for the reservation
@@ -72,11 +79,10 @@ public class BookService {
         loan.setLoanDate(LocalDate.now());
         loan.setStatus(LoanStatus.RESERVED);
 
-        // Setting reservation expiry date (7 days from now)
+        // Set reservation expiry date (7 days from now)
         loan.setReservationExpiryDate(LocalDate.now().plusDays(7));
 
         loanRepository.save(loan);
     }
-
 
 }

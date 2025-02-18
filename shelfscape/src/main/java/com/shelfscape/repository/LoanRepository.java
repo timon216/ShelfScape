@@ -2,6 +2,7 @@ package com.shelfscape.repository;
 
 import com.shelfscape.model.Loan;
 import com.shelfscape.model.LoanStatus;
+import com.shelfscape.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
     List<Loan> findByBookTitleContainingIgnoreCaseOrBookAuthorContainingIgnoreCaseOrBookIsbnContainingIgnoreCaseOrUserFirstNameContainingIgnoreCaseOrUserLastNameContainingIgnoreCase(
             String title, String author, String isbn, String userfirstname, String userlastname);
+
+    long countByUserAndStatus(User user, LoanStatus status);
 }

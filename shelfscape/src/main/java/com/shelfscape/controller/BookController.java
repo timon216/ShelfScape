@@ -1,9 +1,12 @@
 package com.shelfscape.controller;
 
 import com.shelfscape.model.Book;
+import com.shelfscape.model.User;
 import com.shelfscape.service.BookService;
+import com.shelfscape.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,9 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public String getAllBooks() {
         return "book-list";
@@ -27,10 +33,15 @@ public class BookController {
     }
 
     @PostMapping("/reserve/{id}")
-    public String reserveBook(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String reserveBook(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
         try {
-            bookService.reserveBook(id);
-            return "redirect:/catalogue";
+            if (userService.canReserveOrBorrow(user)) {
+                bookService.reserveBook(id);
+                return "redirect:/catalogue";
+            } else {
+                redirectAttributes.addFlashAttribute("error", "You can only reserve or borrow a maximum of 6 books at the same time.");
+                return "redirect:/catalogue";
+            }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/catalogue";

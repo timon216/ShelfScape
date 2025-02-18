@@ -1,5 +1,6 @@
 package com.shelfscape.service;
 
+import com.shelfscape.model.LoanStatus;
 import com.shelfscape.model.Role;
 import com.shelfscape.model.User;
 import com.shelfscape.repository.UserRepository;
@@ -22,6 +23,9 @@ public class UserService {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private LoanService loanService;
 
     public User registerUser(User user) {
         // Check if the user already exists
@@ -70,5 +74,12 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public boolean canReserveOrBorrow(User user) {
+        long reservedBooksCount = loanService.countLoansByUserAndStatus(user, LoanStatus.RESERVED);
+        long borrowedBooksCount = loanService.countLoansByUserAndStatus(user, LoanStatus.BORROWED);
+
+        return (reservedBooksCount + borrowedBooksCount) < 6;
     }
 }
