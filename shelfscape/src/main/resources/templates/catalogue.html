@@ -18,8 +18,14 @@
 
 <h1>Book Catalogue</h1>
 
-<div th:if="${error}" class="alert alert-danger">
-    <p th:text="${error}"></p>
+<!-- Search Form -->
+<form th:action="@{/catalogue}" method="get">
+    <input type="text" name="search" placeholder="Search books..." th:value="${searchQuery}">
+    <button type="submit">Search</button>
+</form>
+
+<div th:if="${books != null and #lists.isEmpty(books) and searchQuery != null}">
+    <p>No book is matching your search</p>
 </div>
 
 <table>

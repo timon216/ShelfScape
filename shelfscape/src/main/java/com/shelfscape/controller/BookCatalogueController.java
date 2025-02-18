@@ -20,9 +20,21 @@ public class BookCatalogueController {
     private BookService bookService;
 
     @GetMapping
-    public String viewCatalogue(@RequestParam(value = "error", required = false) String error, Model model, Authentication authentication) {
+    public String viewCatalogue(@RequestParam(value = "search", required = false) String searchQuery,
+                                @RequestParam(value = "error", required = false) String error,
+                                Model model,
+                                Authentication authentication) {
 
-        List<Book> books = bookService.getAllBooks();
+        List<Book> books;
+
+        // If search query is provided, filter books
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            books = bookService.searchBooks(searchQuery);
+            model.addAttribute("searchQuery", searchQuery);
+        } else {
+            books = bookService.getAllBooks();
+        }
+
         boolean isLoggedIn = authentication != null && authentication.isAuthenticated();
 
         model.addAttribute("books", books);
