@@ -18,18 +18,23 @@
 
 <h1>Book Catalogue</h1>
 
-<h3>Search for a book by title, author or ISBN:</h3>
+<div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
+
+<h3>Search for a book by title, author, or ISBN:</h3>
 <form th:action="@{/catalogue}" method="get">
     <input type="text" name="search" placeholder="Search books..." th:value="${searchQuery}">
     <button type="submit">Search</button>
 </form>
 
 <div>
-    <h3>or filter books by genres and find something interesting:</h3>
+    <h3>Or filter books by genres and find something interesting:</h3>
     <form th:action="@{/catalogue}" method="get">
         <div th:each="genre : ${allGenres}">
             <label>
-                <input type="checkbox" name="genres" th:value="${genre}" th:checked="${genres != null and genres.contains(genre)}">
+                <input type="checkbox" name="genres" th:value="${genre}"
+                       th:checked="${genres != null and genres.contains(genre)}">
                 <span th:text="${genre}"></span>
             </label>
         </div>
@@ -56,7 +61,7 @@
         <td th:text="${book.genre}"></td>
         <td th:text="${book.isbn}"></td>
         <td th:if="${isLoggedIn}" th:text="${book.available ? 'Available' : 'Not Available'}"></td>
-        <td th:if="${isLoggedIn}">
+        <td th:if="${isLoggedIn and book.available}">
             <form th:action="@{/books/reserve/{id}(id=${book.id})}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-primary">Reserve</button>
             </form>

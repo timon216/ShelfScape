@@ -2,8 +2,9 @@ package com.shelfscape.controller;
 
 import com.shelfscape.model.Book;
 import com.shelfscape.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +30,16 @@ public class BookCatalogueController {
         List<Book> books = bookService.searchAndFilterByGenres(search, genres);
         List<String> allGenres = bookService.getAllGenres();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() &&
+                !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser"));
+
         model.addAttribute("books", books);
         model.addAttribute("searchQuery", search);
         model.addAttribute("allGenres", allGenres);
         model.addAttribute("genres", genres);
+        model.addAttribute("isLoggedIn", isLoggedIn); // Add this attribute
 
         return "catalogue";
     }
 }
-
