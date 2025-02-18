@@ -246,5 +246,16 @@ public class AdminController {
         return "redirect:" + redirectUrl;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users/{id}/loans")
+    public String viewUserLoans(@PathVariable Long id, Model model) {
+        User user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Loan> loans = loanService.getLoansByUserId(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("loans", loans);
+
+        return "admin/user-loans";
+    }
 
 }

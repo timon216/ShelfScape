@@ -112,4 +112,9 @@ public class LoanService {
 
         return loanRepository.save(loan);
     }
+
+    public List<Loan> getLoansByUserId(Long userId) {
+        return loanRepository.findByUserId(userId);
+    }
+
 }
