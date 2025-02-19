@@ -32,6 +32,7 @@
       <th>Loan ID</th>
       <th>User</th>
       <th>Book</th>
+      <th>Reservation/loan date</th>
       <th>Status</th>
       <th>Due Date</th>
       <th>Actions</th>
@@ -42,6 +43,7 @@
       <td th:text="${loan.id}"></td>
       <td th:text="${loan.user.firstName} + ' ' + ${loan.user.lastName}"></td>
       <td th:text="${loan.book.title}"></td>
+      <td th:text="${loan.loanDate}"></td>
       <td th:text="${loan.status}"></td>
       <td>
         <span th:text="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED ? loan.reservationExpiryDate :

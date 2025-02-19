@@ -13,8 +13,8 @@
     <thead>
     <tr>
       <th>Book</th>
+      <th>Reservation/loan date</th>
       <th>Status</th>
-      <th>Loan date</th>
       <th>Due Date</th>
       <th>Actions</th>
     </tr>
@@ -22,8 +22,8 @@
     <tbody>
     <tr th:each="loan : ${loans}">
       <td th:text="${loan.book.title}"></td>
-      <td th:text="${loan.status}"></td>
       <td th:text="${loan.loanDate}"></td>
+      <td th:text="${loan.status}"></td>
       <td>
         <span th:text="${loan.status == T(com.shelfscape.model.LoanStatus).RESERVED ? loan.reservationExpiryDate :
                         (loan.status == T(com.shelfscape.model.LoanStatus).BORROWED ? loan.returnDate : '')}"></span>
