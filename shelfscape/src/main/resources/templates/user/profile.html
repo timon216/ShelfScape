@@ -18,6 +18,10 @@
 
 <a href="/user/profile-update">Edit Profile</a>
 
+<form th:action="@{/user/delete/{id}(id=${user.id})}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete the account?')">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
 <h3>Your Loans:</h3>
 <table>
     <thead>

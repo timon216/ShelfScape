@@ -4,6 +4,7 @@ import com.shelfscape.model.Loan;
 import com.shelfscape.model.User;
 import com.shelfscape.service.LoanService;
 import com.shelfscape.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -128,6 +129,18 @@ public class UserController {
         redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
         return "redirect:/user/profile";
     }
+
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @PostMapping("/delete/{id}")
+    public String deleteUserAccount(@PathVariable Long id, HttpServletRequest request) {
+        userService.deleteUserAccount(id);
+
+        SecurityContextHolder.clearContext();
+        request.getSession().invalidate();
+
+        return "redirect:/login";
+    }
+
 
 
 }

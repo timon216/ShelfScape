@@ -1,8 +1,11 @@
 package com.shelfscape.service;
 
+import com.shelfscape.model.Book;
 import com.shelfscape.model.LoanStatus;
 import com.shelfscape.model.Role;
 import com.shelfscape.model.User;
+import com.shelfscape.repository.BookRepository;
+import com.shelfscape.repository.LoanRepository;
 import com.shelfscape.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +21,13 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private LoanRepository loanRepository;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -126,6 +136,27 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUserAccount(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found with ID: " + userId));
 
+        boolean hasActiveLoans = user.getLoans().stream()
+                .anyMatch(loan -> loan.getStatus() == LoanStatus.BORROWED);
+
+        if (hasActiveLoans) {
+            throw new IllegalStateException("You have active loans and cannot delete the account. You need to return the borrowed books first.");
+        }
+
+        user.getLoans().stream()
+                .filter(loan -> loan.getStatus() == LoanStatus.RESERVED)
+                .forEach(loan -> {
+                    Book book = loan.getBook();
+                    book.setAvailable(true);
+                    bookRepository.save(book);
+                    loanRepository.delete(loan);
+                });
+
+        userRepository.delete(user);
+    }
 
 }

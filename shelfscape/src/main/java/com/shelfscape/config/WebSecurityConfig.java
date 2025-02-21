@@ -34,11 +34,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/login", "/register", "/reserve"))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/login", "/register", "/reserve", "/user/delete")
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/", "/home", "/login", "/register", "/about", "/catalogue").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/user/delete").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -58,7 +61,7 @@ public class WebSecurityConfig {
         return (request, response, authentication) -> {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-            if (roles.contains("ROLE_ADMIN")) { // Ensure proper role prefix
+            if (roles.contains("ROLE_ADMIN")) {
                 response.sendRedirect("/admin/dashboard");
             } else {
                 response.sendRedirect("/user/profile");
