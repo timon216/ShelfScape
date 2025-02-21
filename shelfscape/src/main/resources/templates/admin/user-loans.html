@@ -13,7 +13,7 @@
     <thead>
     <tr>
       <th>Book</th>
-      <th>Reservation/loan date</th>
+      <th>Reservation date</th>
       <th>Status</th>
       <th>Due Date</th>
       <th>Actions</th>
@@ -21,7 +21,7 @@
     </thead>
     <tbody>
     <tr th:each="loan : ${loans}">
-      <td th:text="${loan.book.title}"></td>
+      <td th:text="${loan.book.title} + ' - ' + ${loan.book.author}"></td>
       <td th:text="${loan.loanDate}"></td>
       <td th:text="${loan.status}"></td>
       <td>
