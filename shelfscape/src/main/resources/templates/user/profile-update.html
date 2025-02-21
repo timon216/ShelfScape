@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Update Profile</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h2>Update Profile</h2>
+
+<div th:if="${errorMessage}" class="error-message">
+  <p th:text="${errorMessage}"></p>
+</div>
+
+<div th:if="${successMessage}" class="success-message">
+  <p th:text="${successMessage}"></p>
+</div>
+
+<form th:action="@{/user/profile-update}" method="post">
+  <input type="hidden" name="email" th:value="${email}"/>
+
+  <label for="lastName">New Last Name:</label>
+  <input type="text" id="lastName" name="lastName" th:value="${lastName}">
+
+  <label for="oldPassword">Old Password:</label>
+  <input type="password" id="oldPassword" name="oldPassword">
+
+  <label for="newPassword">New Password:</label>
+  <input type="password" id="newPassword" name="newPassword">
+
+  <label for="confirmPassword">Confirm New Password:</label>
+  <input type="password" id="confirmPassword" name="confirmPassword">
+
+  <button type="submit">Update</button>
+</form>
+
+<a href="/user/profile">Back to Profile</a>
+
+</body>
+</html>
