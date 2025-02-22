@@ -5,6 +5,7 @@ import com.shelfscape.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,7 +49,7 @@ public class BookImportService {
                 book.setAuthor(data[1]);
                 book.setGenre(data[2]);
                 book.setIsbn(isbn);
-                book.setAvailable(true);
+                book.setQuantity(Integer.parseInt(data[4])); // Set the quantity
                 bookRepository.save(book);
             }
         }

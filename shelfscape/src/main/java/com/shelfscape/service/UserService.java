@@ -28,7 +28,6 @@ public class UserService {
     @Autowired
     private LoanRepository loanRepository;
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -151,12 +150,11 @@ public class UserService {
                 .filter(loan -> loan.getStatus() == LoanStatus.RESERVED)
                 .forEach(loan -> {
                     Book book = loan.getBook();
-                    book.setAvailable(true);
+                    book.setQuantity(book.getQuantity() + 1); // Increment quantity
                     bookRepository.save(book);
                     loanRepository.delete(loan);
                 });
 
         userRepository.delete(user);
     }
-
 }

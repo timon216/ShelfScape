@@ -19,10 +19,8 @@
   <label for="isbn">ISBN:</label>
   <input type="text" id="isbn" name="isbn" th:value="${book.isbn}" required pattern="^(?:\d{9}[\dX]|\d{13})$"><br>
 
-<!--  this should happen in user's loans -->
-<!--  <label for="available">Available</label>-->
-<!--  <input type="checkbox" id="available" name="available" th:checked="${book.available}" />-->
-<!--  <input type="hidden" name="available" value="false" />-->
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" th:value="${book.quantity}" required min="1"><br>
 
   <button type="submit">Save Changes</button>
 </form>

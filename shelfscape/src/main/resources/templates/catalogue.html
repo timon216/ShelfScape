@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Book Catalogue</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +41,6 @@
     </form>
 </div>
 
-
 <table>
     <thead>
     <tr>
@@ -50,7 +48,7 @@
         <th>Author</th>
         <th>Genre</th>
         <th>ISBN</th>
-        <th th:if="${isLoggedIn}">Status</th>
+        <th th:if="${isLoggedIn}">Quantity</th> <!-- New column for quantity -->
         <th th:if="${isLoggedIn}">Actions</th>
     </tr>
     </thead>
@@ -60,8 +58,8 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.genre}"></td>
         <td th:text="${book.isbn}"></td>
-        <td th:if="${isLoggedIn}" th:text="${book.available ? 'Available' : 'Not Available'}"></td>
-        <td th:if="${isLoggedIn and book.available}">
+        <td th:if="${isLoggedIn}" th:text="${book.quantity}"></td> <!-- Display the quantity -->
+        <td th:if="${isLoggedIn and book.quantity > 0}">
             <form th:action="@{/books/reserve/{id}(id=${book.id})}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-primary">Reserve</button>
             </form>

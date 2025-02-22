@@ -8,6 +8,7 @@ import com.shelfscape.repository.BookRepository;
 import com.shelfscape.repository.LoanRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -58,16 +59,17 @@ public class LoanService {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new IllegalStateException("Loan not found with ID: " + loanId));
 
+        Book book = loan.getBook();
+
         if (status == LoanStatus.BORROWED && loan.getStatus() == LoanStatus.RESERVED) {
             // Change status to borrowed and extend the loan date by 30 days
             loan.setStatus(LoanStatus.BORROWED);
             loan.setLoanDate(LocalDate.now());
             loan.setReturnDate(LocalDate.now().plusDays(30));
         } else if (status == LoanStatus.RETURNED && loan.getStatus() == LoanStatus.BORROWED) {
-            // Change status to returned and make the book available again
+            // Change status to returned and increment the book quantity
             loan.setStatus(LoanStatus.RETURNED);
-            Book book = loan.getBook();
-            book.setAvailable(true);
+            book.setQuantity(book.getQuantity() + 1); // Increment quantity
             bookRepository.save(book);
         }
 
@@ -90,11 +92,9 @@ public class LoanService {
     public Loan removeReservation(Long loanId, Long userId) {
         Loan loan = loanRepository.findById(loanId).orElse(null);
         if (loan != null && loan.getUser().getId().equals(userId) && loan.getStatus() == LoanStatus.RESERVED) {
-
             Book book = loan.getBook();
-            book.setAvailable(true);
+            book.setQuantity(book.getQuantity() + 1); // Increment quantity
             bookRepository.save(book);
-
             loanRepository.delete(loan);
             return loan;
         }

@@ -65,11 +65,11 @@ public class BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
-        if (!book.isAvailable()) {
-            throw new RuntimeException("Book is already reserved.");
+        if (book.getQuantity() <= 0) {
+            throw new RuntimeException("No available copies of this book.");
         }
 
-        book.setAvailable(false);  // Mark the book as unavailable since it's being reserved
+        book.setQuantity(book.getQuantity() - 1); // Decrement quantity
         bookRepository.save(book);
 
         // Create a new loan for the reservation
@@ -82,6 +82,18 @@ public class BookService {
         // Set reservation expiry date (7 days from now)
         loan.setReservationExpiryDate(LocalDate.now().plusDays(7));
 
+        loanRepository.save(loan);
+    }
+
+    public void returnBook(Long loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+
+        Book book = loan.getBook();
+        book.setQuantity(book.getQuantity() + 1); // Increment quantity
+        bookRepository.save(book);
+
+        loan.setStatus(LoanStatus.RETURNED);
         loanRepository.save(loan);
     }
 
@@ -110,6 +122,4 @@ public class BookService {
     public List<String> getAllGenres() {
         return bookRepository.findDistinctGenres();
     }
-
-
 }

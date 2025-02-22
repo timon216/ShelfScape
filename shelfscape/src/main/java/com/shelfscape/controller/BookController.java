@@ -5,7 +5,6 @@ import com.shelfscape.model.User;
 import com.shelfscape.service.BookService;
 import com.shelfscape.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +46,6 @@ public class BookController {
             return "redirect:/catalogue";
         }
     }
-
 
     @PostMapping
     public String addBook(@RequestBody Book book) {

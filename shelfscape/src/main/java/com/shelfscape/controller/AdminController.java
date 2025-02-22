@@ -84,13 +84,13 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/books/edit/{id}")
-    public String updateBook(@PathVariable Long id, @ModelAttribute Book book, @RequestParam(defaultValue = "false") boolean available) {
+    public String updateBook(@PathVariable Long id, @ModelAttribute Book book, @RequestParam int quantity) {
         Book existingBook = bookService.getBookById(id).orElseThrow(() -> new RuntimeException("Book not found"));
         existingBook.setTitle(book.getTitle());
         existingBook.setAuthor(book.getAuthor());
         existingBook.setGenre(book.getGenre());
         existingBook.setIsbn(book.getIsbn());
-        existingBook.setAvailable(available);
+        existingBook.setQuantity(quantity); // Update the quantity
         bookService.saveBook(existingBook);
         return "redirect:/admin/books";
     }
@@ -172,7 +172,6 @@ public class AdminController {
         return "admin/books";
     }
 
-
     // loans-related methods
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/loans")
@@ -229,7 +228,6 @@ public class AdminController {
         return "redirect:" + redirectUrl;
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/loans/delete/{id}")
     public String deleteLoan(@PathVariable Long id, @RequestParam String redirectUrl) {
@@ -238,7 +236,7 @@ public class AdminController {
         // Make the book available again if the loan was either BORROWED or RESERVED
         if (loan.getStatus() == LoanStatus.BORROWED || loan.getStatus() == LoanStatus.RESERVED) {
             Book book = loan.getBook();
-            book.setAvailable(true);
+            book.setQuantity(book.getQuantity() + 1); // Increment quantity
             bookService.saveBook(book);
         }
 
@@ -257,5 +255,4 @@ public class AdminController {
 
         return "admin/user-loans";
     }
-
 }

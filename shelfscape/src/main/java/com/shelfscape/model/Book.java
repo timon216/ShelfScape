@@ -15,7 +15,12 @@ public class Book {
     private String author;
     private String genre;
     private String isbn;
-    private boolean available;
+
+    // Remove the 'available' field
+    // private boolean available;
+
+    // Add the 'quantity' field
+    private int quantity;
 
     @OneToMany(mappedBy = "book")
     private Set<Loan> loans;
@@ -56,11 +61,20 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public boolean isAvailable() {
-        return available;
+    // Remove the 'available' getter and setter
+    // public boolean isAvailable() {
+    //     return available;
+    // }
+    // public void setAvailable(boolean available) {
+    //     this.available = available;
+    // }
+
+    // Add the 'quantity' getter and setter
+    public int getQuantity() {
+        return quantity;
     }
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Set<Loan> getLoans() {
