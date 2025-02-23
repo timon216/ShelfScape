@@ -34,6 +34,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Loan> loans;
 
+    private boolean hasActiveLoans;
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -93,5 +95,13 @@ public class User {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public boolean isHasActiveLoans() {
+        return hasActiveLoans;
+    }
+
+    public void setHasActiveLoans(boolean hasActiveLoans) {
+        this.hasActiveLoans = hasActiveLoans;
     }
 }

@@ -51,7 +51,7 @@
             <td>
                 <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
                 <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?')">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger" th:disabled="${user.hasActiveLoans}" th:title="${user.hasActiveLoans} ? 'User has active loans' : ''">Delete</button>
                 </form>
                 <a th:href="@{/admin/users/{id}/loans(id=${user.id})}" class="btn btn-info">Show Loans</a>
             </td>

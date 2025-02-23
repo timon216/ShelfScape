@@ -140,7 +140,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+        userService.deleteUserByAdmin(id);
         return "redirect:/admin/users";
     }
 
@@ -154,9 +154,18 @@ public class AdminController {
         } else {
             users = userService.getAllUsers();
         }
+
+        // Check if each user has active loans
+        for (User user : users) {
+            boolean hasActiveLoans = loanService.getLoansByUser(user.getId()).stream()
+                    .anyMatch(loan -> loan.getStatus() == LoanStatus.BORROWED);
+            user.setHasActiveLoans(hasActiveLoans); // Assuming you have a `hasActiveLoans` field in the User model
+        }
+
         model.addAttribute("users", users);
-        return "admin/users";
+        return "admin/users"; // Assuming your template is named "users.html"
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/books")

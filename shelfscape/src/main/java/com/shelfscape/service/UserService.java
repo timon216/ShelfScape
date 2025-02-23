@@ -80,9 +80,25 @@ public class UserService {
         return userRepository.findByEmailContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(searchQuery, searchQuery, searchQuery);
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUserByAdmin(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found with ID: " + userId));
+
+        List<Loan> loans = new ArrayList<>(user.getLoans());
+        user.getLoans().clear();
+
+        for (Loan loan : loans) {
+            if (loan.getStatus() == LoanStatus.RESERVED) {
+                Book book = loan.getBook();
+                book.setQuantity(book.getQuantity() + 1); // Increment quantity
+                bookRepository.save(book);
+            }
+            loanRepository.delete(loan);
+        }
+
+        userRepository.delete(user);
     }
+
 
     public boolean canReserveOrBorrow(User user) {
         long reservedBooksCount = loanService.countLoansByUserAndStatus(user, LoanStatus.RESERVED);
