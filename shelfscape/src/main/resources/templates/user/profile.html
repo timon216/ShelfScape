@@ -6,7 +6,6 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
 <h1>Welcome, <span th:text="${user.firstName}">User</span>!</h1>
@@ -24,11 +23,9 @@
 
 <div th:unless="${hasBorrowedBooks}">
     <form th:action="@{/user/delete/{id}(id=${user.id})}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete the account?')">
-        <button type="submit" class="btn btn-danger">Delete account</button>
+        <button type="submit">Delete account</button>
     </form>
 </div>
-
-
 
 <h3>Your Loans:</h3>
 <table>

@@ -5,19 +5,14 @@
     <title>Book Catalogue</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
+
 <body>
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
 <h1>Book Catalogue</h1>
 
-<div th:if="${error}" class="alert alert-danger">
+<div th:if="${error}">
     <p th:text="${error}"></p>
 </div>
 
@@ -61,7 +56,7 @@
         <td th:if="${isLoggedIn}" th:text="${book.quantity}"></td> <!-- Display the quantity -->
         <td th:if="${isLoggedIn and book.quantity > 0}">
             <form th:action="@{/books/reserve/{id}(id=${book.id})}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-primary">Reserve</button>
+                <button type="submit">Reserve</button>
             </form>
         </td>
     </tr>

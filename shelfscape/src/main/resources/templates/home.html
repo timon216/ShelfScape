@@ -5,52 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- Include Navbar -->
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
-<main class="wrapper-big">
-    <section class="hero">
-        <div class="left">
+<main>
+    <section>
+        <div>
             <h1>Borrow, read, and discover new worlds.</h1>
-            <a href="/register" class="btn btn-dark">Get Started</a>
-        </div>
-        <div class="right">
-            <img src="/images/hero-img.png" alt="">
+            <a href="/register">Get Started</a>
         </div>
     </section>
 
-    <section class="section-info | full-bleed ">
+    <section>
         <div>
             <h2>Your Library, Just a Click Away</h2>
             <p>Easily browse your library’s collection, reserve books online, and pick them up at your convenience. With ShelfScape, managing your reading list has never been easier. Find your next great read, check availability, and secure your copy—all in one place!</p>
-        </div>
-    </section>
-
-    <section class="section-items">
-        <div class="row">
-            <div class="item-big">
-                <p>new books added every week to our collection</p>
-            </div>
-            <div class="item-small">
-                <img src="/images/books-icon.svg" alt="">
-            </div>
-        </div>
-        <div class="row">
-            <div class="item-small">
-                <img src="/images/users-icon.svg" alt="">
-            </div>
-            <div class="item-big text-align-right">
-                <p>growing community of book lovers</p>
-            </div>
         </div>
     </section>
 

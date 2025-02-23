@@ -2,17 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Update Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
 
 <h2>Update Profile</h2>
 
-<div th:if="${errorMessage}" class="error-message">
+<div th:if="${errorMessage}">
   <p th:text="${errorMessage}"></p>
 </div>
 
-<div th:if="${successMessage}" class="success-message">
+<div th:if="${successMessage}">
   <p th:text="${successMessage}"></p>
 </div>
 

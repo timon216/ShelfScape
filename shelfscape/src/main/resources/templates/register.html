@@ -5,64 +5,58 @@
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 <th:block th:replace="~{fragments/navbar}"></th:block>
 
-<main class="full-bleed signup-main">
-    <div class="signup-img">
+<main>
+    <div>
         <img src="/images/signup-img.png" alt="">
     </div>
 
-    <div class="form-container">
+    <div>
         <h2>Start your next reading adventure!</h2>
         <p>Join ShelfScape and discover thousands of books, personalized recommendations, and a vibrant community of readers. Sign up today and dive into the world of stories!</p>
 
-        <form th:action="@{/register}" th:object="${user}" method="post" class="form">
+        <form th:action="@{/register}" th:object="${user}" method="post">
 
-            <div class="fieldset">
+            <div>
                 <label for="firstName">First Name:</label>
                 <input type="text" id="firstName" th:field="*{firstName}" placeholder="John" required />
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
             </div>
 
-            <div class="fieldset">
+            <div>
                 <label for="lastName">Last Name:</label>
                 <input type="text" id="lastName" th:field="*{lastName}" placeholder="Doe" required />
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
             </div>
 
-            <div class="fieldset">
+            <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" th:field="*{email}" placeholder="johndoe@email.com" required />
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
             </div>
 
-            <div class="fieldset">
+            <div>
                 <label for="password">Password:</label>
                 <input type="password" id="password" th:field="*{password}" placeholder="strong password here" required />
                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
             </div>
 
-            <div class="fieldset">
+            <div>
                 <label for="confirmPassword">Confirm Password:</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" placeholder="same password as above" required />
                 <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
             </div>
 
             <div>
-                <button type="submit" class="btn btn-blue signup-btn">Sign up</button>
+                <button type="submit">Sign up</button>
             </div>
 
             <p th:if="${message != null}" th:text="${message}"></p>
         </form>
-        <p>Already have an account? <a href="/login"><span class="login-link">Log in</span></a></p>
+        <p>Already have an account? <a href="/login"><span>Log in</span></a></p>
     </div>
 
 

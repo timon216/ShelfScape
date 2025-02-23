@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<th:block th:replace="~{fragments/navbar}"></th:block>
+
 <h1>Edit Book</h1>
 <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="post">
   <label for="title">Title:</label>
