@@ -121,4 +121,8 @@ public class LoanService {
     public long countLoansByUserAndStatus(User user, LoanStatus status) {
         return loanRepository.countByUserAndStatus(user, status);
     }
+
+    public boolean hasReservationForIsbn(Long userId, String isbn) {
+        return loanRepository.findByUserIdAndBookIsbnAndStatus(userId, isbn, LoanStatus.RESERVED).isPresent();
+    }
 }

@@ -31,6 +31,9 @@ public class BookService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LoanService loanService;
+
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
@@ -67,6 +70,11 @@ public class BookService {
 
         if (book.getQuantity() <= 0) {
             throw new RuntimeException("No available copies of this book.");
+        }
+
+        // Check if the user already has a reservation for this ISBN
+        if (loanService.hasReservationForIsbn(user.getId(), book.getIsbn())) {
+            throw new RuntimeException("You cannot reserve the same book more than once.");
         }
 
         book.setQuantity(book.getQuantity() - 1); // Decrement quantity
