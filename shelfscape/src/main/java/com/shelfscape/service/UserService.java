@@ -1,9 +1,6 @@
 package com.shelfscape.service;
 
-import com.shelfscape.model.Book;
-import com.shelfscape.model.LoanStatus;
-import com.shelfscape.model.Role;
-import com.shelfscape.model.User;
+import com.shelfscape.model.*;
 import com.shelfscape.repository.BookRepository;
 import com.shelfscape.repository.LoanRepository;
 import com.shelfscape.repository.UserRepository;
@@ -12,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -146,15 +144,31 @@ public class UserService {
             throw new IllegalStateException("You have active loans and cannot delete the account. You need to return the borrowed books first.");
         }
 
-        user.getLoans().stream()
-                .filter(loan -> loan.getStatus() == LoanStatus.RESERVED)
-                .forEach(loan -> {
-                    Book book = loan.getBook();
-                    book.setQuantity(book.getQuantity() + 1); // Increment quantity
-                    bookRepository.save(book);
-                    loanRepository.delete(loan);
-                });
+        // Detach loans from the user
+        List<Loan> loans = new ArrayList<>(user.getLoans());
+        user.getLoans().clear();
 
+        // Delete reserved loans and update book quantities
+        for (Loan loan : loans) {
+            if (loan.getStatus() == LoanStatus.RESERVED) {
+                Book book = loan.getBook();
+                book.setQuantity(book.getQuantity() + 1); // Increment quantity
+                bookRepository.save(book);
+            }
+            loanRepository.delete(loan);
+        }
+
+        // Delete the user
         userRepository.delete(user);
+    }
+
+
+
+    public boolean hasBorrowedBooks(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found with ID: " + userId));
+
+        return user.getLoans().stream()
+                .anyMatch(loan -> loan.getStatus() == LoanStatus.BORROWED);
     }
 }

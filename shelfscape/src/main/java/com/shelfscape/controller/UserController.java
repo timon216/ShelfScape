@@ -1,6 +1,7 @@
 package com.shelfscape.controller;
 
 import com.shelfscape.model.Loan;
+import com.shelfscape.model.LoanStatus;
 import com.shelfscape.model.User;
 import com.shelfscape.service.LoanService;
 import com.shelfscape.service.UserService;
@@ -48,11 +49,15 @@ public class UserController {
         User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         List<Loan> loans = loanService.getLoansByUser(user.getId());
 
+        boolean hasBorrowedBooks = loans.stream().anyMatch(loan -> loan.getStatus() == LoanStatus.BORROWED);
+
         model.addAttribute("user", user);
         model.addAttribute("loans", loans);
+        model.addAttribute("hasBorrowedBooks", hasBorrowedBooks); // Add the hasBorrowedBooks attribute
 
         return "user/profile";
     }
+
 
     @PostMapping("/remove-loan/{loanId}")
     public String removeLoan(@PathVariable Long loanId) {
@@ -132,14 +137,23 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @PostMapping("/delete/{id}")
-    public String deleteUserAccount(@PathVariable Long id, HttpServletRequest request) {
-        userService.deleteUserAccount(id);
+    public String deleteUserAccount(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            userService.deleteUserAccount(id);
 
-        SecurityContextHolder.clearContext();
-        request.getSession().invalidate();
+            // Clear the security context and invalidate the session
+            SecurityContextHolder.clearContext();
+            request.getSession().invalidate();
 
-        return "redirect:/login";
+            return "redirect:/login";
+        } catch (IllegalStateException e) {
+            // If an error occurs, add the error message to RedirectAttributes
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/profile"; // Redirect to the user's profile page
+        }
     }
+
+
 
 
 
