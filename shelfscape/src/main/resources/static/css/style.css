@@ -1,3 +1,48 @@
+
+/* ------------------- */
+/* CUSTOM PROPERTIES   */
+/* ------------------- */
+
+:root {
+
+/* fonts sizes*/
+    --fs-200: clamp(0.7813rem, calc(0.7755rem + 0.0287vw), 0.8rem);
+    --fs-300: clamp(0.9375rem, calc(0.9184rem + 0.0956vw), 1rem);
+    --fs-400: clamp(1.125rem, calc(1.0868rem + 0.1912vw), 1.25rem);
+    --fs-500: clamp(1.35rem, calc(1.285rem + 0.325vw), 1.5625rem);
+    --fs-600: clamp(1.62rem, calc(1.5181rem + 0.5096vw), 1.9531rem);
+    --fs-700: clamp(1.944rem, calc(1.7918rem + 0.7609vw), 2.4414rem);
+    --fs-800: clamp(2.3328rem, calc(2.1129rem + 1.0997vw), 3.0518rem);
+    --fs-900: clamp(2.7994rem, calc(2.4887rem + 1.5531vw), 3.8147rem);
+
+    /* colors */
+    --clr-primary: #07183b;
+    --clr-secondary: #4a6382;
+
+    --clr-accent-blue: #67abda;
+    --clr-accent-beige: #dfd8c3;
+
+    --clr-text-light: #f5f5ef;
+    --clr-text-dark: #0f0f09;
+
+    --clr-bg-light: #f1f1e6;
+
+    --clr-gray-light: #ebeff0;
+    --clr-gray-medium: #cdd4da;
+    --clr-gray-dark: #a6b7c5;
+
+    --clr-alert-danger-light: #ffb6b3;
+    --clr-alert-danger-dark: #e6463f;
+    --clr-alert-warning-light: #fcf5c7;
+    --clr-alert-warning-dark: #f8e564;
+    --clr-alert-info-light: #c1c1ec;
+    --clr-alert-info-dark: #82cce6;
+    --clr-alert-success-light: #b8e0d2;
+    --clr-alert-success-dark: #60d6ac;
+
+}
+
+
 /* ------------------- */
 /* RESET               */
 /* ------------------- */
@@ -32,6 +77,13 @@ body {
     line-height: 1.5;
     scrollbar-gutter: stable;
     -webkit-font-smoothing: antialiased;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    color: var(--clr-text-dark);
 }
 
 img,
@@ -56,6 +108,10 @@ p, h1, h2, h3, h4, h5, h6 {
 
 h1, h2, h3, h4 {
     text-wrap: balance;
+
+    font-family: "Quattrocento", serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 p {
@@ -98,4 +154,50 @@ textarea:not([rows]) {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
      }
+}
+
+
+/* ------------------- */
+/* UTILITY CLASSES     */
+/* ------------------- */
+
+/* fonts */
+.fs-200 {
+    font-size: var(--fs-200);
+}
+.fs-300 {
+    font-size: var(--fs-300);
+}
+.fs-400 {
+    font-size: var(--fs-400);
+}
+.fs-500 {
+    font-size: var(--fs-500);
+}
+.fs-600 {
+    font-size: var(--fs-600);
+}
+.fs-700 {
+    font-size: var(--fs-700);
+}
+.fs-800 {
+    font-size: var(--fs-800);
+}.fs-900 {
+    font-size: var(--fs-900);
+}
+
+.fs-600,
+.fs-700,
+.fs-800,
+.fs-900 {
+    line-height: 1.1;
+}
+
+.flow > * + * {
+    margin-block-start: 1.4em;
+}
+
+.wrapper {
+    width: min(calc(100% - 4rem), 1160px);
+    margin-inline: auto;
 }
