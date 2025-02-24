@@ -1,0 +1,101 @@
+/* ------------------- */
+/* RESET               */
+/* ------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    color-scheme: dark light;
+    hanging-punctuation: first allow-end last;
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+ul[role='list'],
+ol[role='list'] {
+    list-style: none;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+    line-height: 1.5;
+    scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+h1, h2, h2, h4, button, input, label {
+    line-height: 1.1;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4 {
+    text-wrap: balance;
+}
+
+p {
+    max-width: 75ch;
+    text-wrap: pretty;
+}
+
+a:not([class]) {
+    text-decoration-thickness: max(0.08em, 1px);
+    text-underline-offset: 0.15em;
+    text-decoration-skip: auto;
+    color: currentColor;
+}
+
+textarea:not([rows]) {
+    min-height: 10em;
+}
+
+:target {
+    scroll-margin-block: 5ex;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :has(:target) {
+        scroll-behavior: smooth;
+        scroll-padding-top: 3rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+
+    *,
+     *::before,
+     *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+     }
+}
