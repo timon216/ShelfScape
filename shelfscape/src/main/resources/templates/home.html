@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<!-- Include Navbar -->
-<th:block th:replace="~{fragments/navbar}"></th:block>
+
+<body class="home | wrapper">
+<header class="header">
+    <th:block th:replace="~{fragments/navbar}"></th:block>
+</header>
 
 <main>
     <section>
@@ -21,9 +28,11 @@
     <section>
         <div>
             <h2>Your Library, Just a Click Away</h2>
-            <p>Easily browse your library’s collection, reserve books online, and pick them up at your convenience. With ShelfScape, managing your reading list has never been easier. Find your next great read, check availability, and secure your copy—all in one place!</p>
+            <p>Easily browse your library’s collection, reserve books online, and pick them up at your convenience.</p>
+            <p>With ShelfScape, managing your reading list has never been easier. Find your next great read, check availability, and secure your copy—all in one place!</p>
         </div>
     </section>
+
 
 </main>
 </body>
