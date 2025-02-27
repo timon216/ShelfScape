@@ -82,6 +82,7 @@ body {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    font-size: var(--fs-400);
 
     color: var(--clr-text-dark);
     background-color: var(--clr-bg-light);
@@ -203,6 +204,26 @@ textarea:not([rows]) {
     margin-inline: auto;
 }
 
+.margin-block-s {
+    margin-block: 1rem;
+}
+
+.margin-block-m {
+    margin-block: 2rem;
+}
+
+.margin-block-l {
+    margin-block: 3rem;
+}
+
+.center-h {
+    margin-inline: auto;
+}
+
+.center-v {
+    margin-block: auto;
+}
+
 /* ------------------- */
 /* COMPONENTS          */
 /* ------------------- */
@@ -252,12 +273,21 @@ textarea:not([rows]) {
     z-index: -1;
 }
 
+@media screen and (max-width: 480px) {
+    .main-nav {
+        display: none;
+    }
+}
+
 /* BUTTONS */
 
 .btn {
+    display: inline-block;
+
     padding: 0.6rem 2.3rem;
 
     color: var(--clr-text-light);
+    text-decoration: none;
 
     cursor: pointer;
 
@@ -366,8 +396,16 @@ btn-secondary-dark:hover {
     cursor: pointer;
     background-color: transparent;
 
+    color: var(--clr-text-dark);
     text-decoration: underline;
     text-underline-offset: 0.1rem;
+
+    transition: all 0.3s;
+}
+
+.action:hover {
+    scale: 1.05;
+    text-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .action-blue {
@@ -445,4 +483,219 @@ th, td {
 
 tr:hover {
     background-color: var(--clr-accent-beige);
+}
+
+
+/* ------------------- */
+/* GENERAL STYLE       */
+/* ------------------- */
+
+.header {
+    position: sticky;
+    top: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    z-index: 99;
+}
+
+.header + * {
+    margin-top: 3rem;
+}
+
+.logo {
+    max-width: 6rem;
+
+    margin: 0.5rem;
+}
+
+
+/* ------------------- */
+/* HOME PAGE           */
+/* ------------------- */
+
+.home .header {
+    max-width: 60%;
+    margin-left: auto;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    align-content: center;
+
+    margin-bottom: 3rem;
+
+    max-height: 70vh;
+}
+
+.img-container {
+    position: relative;
+}
+
+.img-container::before {
+    content: "";
+    position: absolute;
+    z-index: -5;
+
+    width: 70%;
+    height: 160vh;
+
+    left: 25%;
+    top: -9rem;
+
+    background-image: url("/images/home-bg-img.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.img-container::after {
+    content: "";
+    position: absolute;
+
+    width: 70%;
+    height: 33rem;
+
+    left: 20%;
+    top: 105%;
+
+    background-image: url("/images/home-cards.png");
+    background-repeat: no-repeat;
+}
+
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-text h1 {
+    width: 10ch;
+}
+
+.home-info {
+    max-width: 50%;
+    margin-left: auto;
+    margin-top: 8rem;
+}
+
+.home .actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.home .actions a {
+    font-size: var(--fs-400);
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .img-container::after {
+        background-image: url("/images/home-cards-horizontal.png");
+
+        width: 200%;
+        height: 17rem;
+
+        left: 50%;
+        top: 100%;
+    }
+
+    .home-info {
+        max-width: 80%;
+        margin-top: 18rem;
+        margin-inline: auto;
+
+        background-color: hsl(60, 28%, 92%, 0.8);
+        padding: 1.5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        body {
+            overflow-x: hidden;
+        }
+
+        .home .header {
+            max-width: 50%;
+        }
+
+        .hero {
+            width: 100%;
+
+            grid-template-columns: 1fr;
+            grid-template-areas: "stack";
+
+            transform: translateY(-2rem);
+        }
+
+
+        .hero-text {
+            width: fit-content;
+
+            grid-area: stack;
+            z-index: 10;
+
+            padding: 1.5rem;
+            margin-left: auto;
+
+            background-color: hsl(60, 28%, 92%, 0.8);
+        }
+
+        .img-container {
+            width: fit-content;
+
+            grid-area: stack;
+        }
+
+        .img-container::after {
+            top: 95%;
+            left: 15%;
+        }
+
+        .home-info {
+            position: relative;
+            z-index: 30;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .hero {
+            transform: translateY(4rem);
+        }
+
+        .img-container::before {
+            left: 20%;
+        }
+
+        .home-info {
+            max-width: 100%;
+            margin-top: 30rem;
+
+            padding: .5rem;
+
+            font-size: var(--fs-300);
+        }
+
+        .home-info .actions {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .img-container::after {
+            background-image: url("/images/home-cards-small.png");
+
+            width: 200%;
+            height: 23rem;
+
+            left: 0;
+            top: 105%;
+        }
+    }
+
+
 }
