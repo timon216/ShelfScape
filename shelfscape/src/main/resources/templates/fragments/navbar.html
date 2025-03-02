@@ -1,7 +1,8 @@
+<button class="mobile-nav-toggle | display-none rotate">| | |</button>
 <nav xmlns:th="http://www.w3.org/1999/xhtml" class="main-nav | fs-400">
   <ul>
     <li><a href="/">Home</a></li>
-    <li><a href="/catalogue" style="margin-right: 1rem;">Catalogue</a></li>
+    <li><a href="/catalogue">Catalogue</a></li>
 
     <!-- If no user is logged in -->
     <li th:if="${#authorization.expression('isAnonymous()')}">
