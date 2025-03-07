@@ -11,33 +11,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="login | wrapper">
 <header class="header">
+    <img src="/images/logo-dark-2.png" alt="" class="logo">
     <th:block th:replace="~{fragments/navbar}"></th:block>
 </header>
 
-<main>
-    <h2>Welcome back, book lover!</h2>
-    <p>Log in to your ShelfScape account and pick up where you left off!</p>
+<main class="full-bleed">
+    <section class="login-form | flow">
+        <h2>Welcome back, book lover!</h2>
+        <p>Log in to your ShelfScape account and pick up where you left off!</p>
 
-    <form th:action="@{/login}" method="post">
+        <form th:action="@{/login}" method="post">
 
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required />
-        </div>
+            <div class="fieldset">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="email@email.com"/>
+            </div>
 
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required />
-        </div>
+            <div class="fieldset">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required placeholder="password"/>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
-    <p>New here? <a href="/register">Create an account</a></p>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p>New here? <a href="/register" class="link">Create an account</a></p>
+    </section>
+
+    <div class="login-img-container">
+        <img src="/images/login-img.png" alt="">
+    </div>
 </main>
 
-<img src="/images/login-img.png" alt="">
 
 <script th:src="@{/js/nav-toggle.js}"></script>
 </body>

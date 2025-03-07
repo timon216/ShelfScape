@@ -224,6 +224,12 @@ textarea:not([rows]) {
     margin-block: auto;
 }
 
+.full-bleed {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%)
+}
+
 /* ------------------- */
 /* COMPONENTS          */
 /* ------------------- */
@@ -385,10 +391,13 @@ btn-secondary-dark:hover {
 .fieldset {
     display: flex;
     flex-direction: column;
+
+    width: 100%;
 }
 
 .fieldset > input {
-    padding-inline: 0.6rem;
+    padding-inline: 0.8rem;
+    padding-block: 0.6rem;
 
     background-color: white;
 
@@ -396,6 +405,8 @@ btn-secondary-dark:hover {
     border-inline: none;
     border-top: none;
     border-bottom: 2px solid var(--clr-text-dark);
+
+    color: currentcolor;
 }
 
 .fieldset > input:focus {
@@ -481,6 +492,11 @@ btn-secondary-dark:hover {
 
 .action-red {
     text-decoration-color: var(--clr-alert-danger-dark);
+}
+
+.link {
+    text-decoration: underline;
+    color: currentcolor;
 }
 
 /* ALERTS */
@@ -759,6 +775,79 @@ tr:hover {
             top: 105%;
         }
     }
+}
 
+/* ------------------- */
+/* LOGIN PAGE          */
+/* ------------------- */
 
+.login main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    overflow-x: hidden;
+}
+
+.login-form {
+    max-width: 40vw;
+    padding-inline: 2rem;
+    margin-left: auto;
+}
+
+.login-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    align-items: flex-end;
+}
+
+.login-img-container img {
+    margin-left: auto;
+}
+
+@media screen and (max-width: 1024px) {
+    .login {
+    }
+
+    .login main {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+
+    .login-form {
+        grid-area: 1 / 1;
+
+        margin-top: 4.5rem;
+        margin-left: 4rem;
+        padding: 2rem;
+        background-color: hsl(60, 28%, 92%, 0.8);
+    }
+
+    .login-img-container {
+        grid-area: 1 / 1;
+
+        margin-top: -9rem;
+        margin-right: -40%;
+        z-index: -1;
+
+        scale: 0.7;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .login-form {
+        max-width: 90vw;
+
+        margin-top: 3rem;
+        margin-left: 0;
+        padding-left: 2rem;
+    }
+
+    .login-img-container {
+        scale: 1;
+        margin-top: 0;
+    }
 }
