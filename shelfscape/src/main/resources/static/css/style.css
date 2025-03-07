@@ -64,6 +64,8 @@ html {
     -moz-text-size-adjust: none;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
+
+    overflow-x: hidden;
 }
 
 ul[role='list'],
@@ -422,6 +424,10 @@ btn-secondary-dark:hover {
     border-bottom: 2px solid var(--clr-alert-success-dark);
 }
 
+.fieldset label {
+    font-size: var(--fs-200);
+}
+
 /* CUSTOM GENRES' CHECKBOXES */
 
 .genres {
@@ -568,6 +574,7 @@ tr:hover {
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 
     z-index: 99;
 }
@@ -671,10 +678,6 @@ tr:hover {
 }
 
 @media screen and (max-width: 1024px) {
-    body {
-        overflow-x: hidden;
-    }
-
     .img-container::after {
         background-image: url("/images/home-cards-horizontal.png");
 
@@ -695,10 +698,6 @@ tr:hover {
     }
 
     @media screen and (max-width: 768px) {
-        body {
-            overflow-x: hidden;
-        }
-
         .home .header {
             max-width: 50%;
         }
@@ -786,8 +785,6 @@ tr:hover {
     grid-template-columns: 1fr 1fr;
 
     align-items: center;
-
-    overflow-x: hidden;
 }
 
 .login-form {
@@ -809,9 +806,6 @@ tr:hover {
 }
 
 @media screen and (max-width: 1024px) {
-    .login {
-    }
-
     .login main {
         grid-template-columns: 1fr;
         align-items: flex-start;
@@ -851,3 +845,77 @@ tr:hover {
         margin-top: 0;
     }
 }
+
+/* ------------------- */
+/* SIGN UP PAGE        */
+/* ------------------- */
+
+.signup main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+}
+
+.signup-form {
+    max-width: 40vw;
+    padding-inline: 2rem;
+    margin-right: auto;
+}
+
+.signup-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    align-items: flex-end;
+}
+
+.signup-img-container img {
+    margin-right: auto;
+}
+
+@media screen and (max-width: 1324px) {
+    .signup main {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+
+    .signup-form {
+        grid-area: 1 / 1;
+
+        max-width: 75vw;
+        margin-top: 4.5rem;
+        margin-right: 4rem;
+        margin-left: auto;
+        padding: 2rem;
+        background-color: hsl(60, 28%, 92%, 0.8);
+    }
+
+    .signup-img-container {
+        grid-area: 1 / 1;
+
+        margin-top: -9rem;
+        margin-left: -30%;
+        z-index: -1;
+
+        scale: 0.7;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .signup-form {
+        max-width: 90vw;
+
+        margin-top: 3rem;
+        margin-right: 0;
+        padding-right: 2rem;
+    }
+
+    .signup-img-container {
+        scale: 1.1;
+        margin-top: 2rem;
+        margin-left: -70%;
+    }
+}
+
