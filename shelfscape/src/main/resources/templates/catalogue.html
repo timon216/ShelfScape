@@ -12,39 +12,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="catalogue | wrapper">
 <header class="header">
+    <img src="/images/logo-dark-2.png" alt="" class="logo">
     <th:block th:replace="~{fragments/navbar}"></th:block>
 </header>
 
-<h1>Book Catalogue</h1>
+<main class="flow">
+    <h1>Book Catalogue</h1>
 
-<div th:if="${error}" class="alert alert-danger">
-    <p th:text="${error}"></p>
-</div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
 
-<h3>Search for a book by title, author, or ISBN:</h3>
-<form th:action="@{/catalogue}" method="get">
-    <input type="text" name="search" placeholder="Search books..." th:value="${searchQuery}">
-    <button type="submit">Search</button>
-</form>
-
-<div>
-    <h3>Or filter books by genres and find something interesting:</h3>
-    <form th:action="@{/catalogue}" method="get" class="genres">
-        <div th:each="genre : ${allGenres}" class="genre | fs-200">
-            <label>
-                <input type="checkbox" name="genres" th:value="${genre}"
-                       th:checked="${genres != null and genres.contains(genre)}">
-                <span th:text="${genre}"></span>
-            </label>
+    <h3>Search for a book by title, author, or ISBN:</h3>
+    <form th:action="@{/catalogue}" method="get" class="catalogue-search">
+        <div class="fieldset">
+            <input type="text" name="search" placeholder="Search books..." th:value="${searchQuery}">
         </div>
-        <button type="submit">Apply Filters</button>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
-</div>
 
-<table>
-    <thead>
+    <div class="flow">
+        <h3>Or filter books by genres and find something interesting:</h3>
+        <form th:action="@{/catalogue}" method="get" class="genres-form">
+
+            <div class="genres">
+                <div th:each="genre : ${allGenres}" class="genre | fs-200">
+                    <label>
+                        <input type="checkbox" name="genres" th:value="${genre}"
+                               th:checked="${genres != null and genres.contains(genre)}">
+                        <span th:text="${genre}"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-secondary-dark">Apply Filters</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
         <tr>
             <th>Title</th>
             <th>Author</th>
@@ -53,8 +61,8 @@
             <th th:if="${isLoggedIn}">Quantity</th> <!-- New column for quantity -->
             <th th:if="${isLoggedIn}">Actions</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr th:each="book : ${books}">
             <td th:text="${book.title}"></td>
             <td th:text="${book.author}"></td>
@@ -67,8 +75,10 @@
                 </form>
             </td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</main>
+
 
 <script th:src="@{/js/nav-toggle.js}"></script>
 </body>
