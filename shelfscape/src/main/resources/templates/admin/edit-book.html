@@ -11,29 +11,40 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="wrapper">
 <header class="header">
+  <img src="/images/logo-dark-2.png" alt="" class="logo">
   <th:block th:replace="~{fragments/navbar}"></th:block>
 </header>
 
-<h1>Edit Book</h1>
-<form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="post">
-  <label for="title">Title:</label>
-  <input type="text" id="title" name="title" th:value="${book.title}" required><br>
+<h1 class="margin-block-s">Edit Book</h1>
+<form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="post" class="form-flow">
+  <div class="fieldset">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" th:value="${book.title}" required>
+  </div>
 
-  <label for="author">Author:</label>
-  <input type="text" id="author" name="author" th:value="${book.author}" required><br>
+  <div class="fieldset">
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" th:value="${book.author}" required>
+  </div>
 
-  <label for="genre">Genre:</label>
-  <input type="text" id="genre" name="genre" th:value="${book.genre}" required><br>
+  <div class="fieldset">
+    <label for="genre">Genre:</label>
+    <input type="text" id="genre" name="genre" th:value="${book.genre}" required>
+  </div>
 
-  <label for="isbn">ISBN:</label>
-  <input type="text" id="isbn" name="isbn" th:value="${book.isbn}" required pattern="^(?:\d{9}[\dX]|\d{13})$"><br>
+  <div class="fieldset">
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" name="isbn" th:value="${book.isbn}" required pattern="^(?:\d{9}[\dX]|\d{13})$">
+  </div>
 
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" name="quantity" th:value="${book.quantity}" required min="1"><br>
+  <div class="fieldset">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" th:value="${book.quantity}" required min="1">
+  </div>
 
-  <button type="submit">Save Changes</button>
+  <button type="submit" class="btn btn-primary">Save Changes</button>
 </form>
 
 <script th:src="@{/js/nav-toggle.js}"></script>

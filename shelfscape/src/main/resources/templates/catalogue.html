@@ -71,7 +71,7 @@
             <td th:if="${isLoggedIn}" th:text="${book.quantity}"></td> <!-- Display the quantity -->
             <td th:if="${isLoggedIn and book.quantity > 0}">
                 <form th:action="@{/books/reserve/{id}(id=${book.id})}" method="post" style="display: inline;">
-                    <button type="submit">Reserve</button>
+                    <button type="submit" class="action action-blue">Reserve</button>
                 </form>
             </td>
         </tr>

@@ -11,22 +11,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="wrapper">
 <header class="header">
+  <img src="/images/logo-dark-2.png" alt="" class="logo">
   <th:block th:replace="~{fragments/navbar}"></th:block>
 </header>
 
-<h1>Manage All Loans</h1>
+<h1>All Loans</h1>
 
-<h3>All Loans</h3>
+<div class="search">
+  <form th:action="@{/admin/loans}" method="get">
+    <div class="fieldset">
+      <label for="search">Search loans:</label>
+      <input type="text" id="search" name="search" placeholder="user, title or ISBN" th:value="${searchQuery}">
+    </div>
+    <button type="submit" class="btn btn-secondary-dark">Search</button>
+  </form>
+</div>
 
-<form th:action="@{/admin/loans}" method="get">
-  <input type="text" name="search" placeholder="Search loans..." th:value="${searchQuery}">
-  <button type="submit">Search</button>
-</form>
 
 <div th:if="${loans != null and #lists.isEmpty(loans) and searchQuery != null}">
-  <p>No loan is matching your search</p>
+  <p class="alert alert-warning">No loan is matching your search</p>
 </div>
 
 <div>
@@ -93,7 +98,7 @@
 
 </div>
 
-<p><a th:href="@{/admin/dashboard}">Back to Dashboard</a></p>
+<a th:href="@{/admin/dashboard}">Back to Dashboard</a>
 
 <script th:src="@{/js/nav-toggle.js}"></script>
 </body>

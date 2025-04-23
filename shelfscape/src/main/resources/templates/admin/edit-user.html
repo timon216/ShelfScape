@@ -11,27 +11,31 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="wrapper">
 <header class="header">
+  <img src="/images/logo-dark-2.png" alt="" class="logo">
   <th:block th:replace="~{fragments/navbar}"></th:block>
 </header>
 
-<h1>Edit User</h1>
+<h1 class="margin-block-s">Edit User</h1>
 
-<form th:action="@{/admin/users/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
-  <div>
+<form th:action="@{/admin/users/edit/{id}(id=${user.id})}" th:object="${user}" method="post" class="form-flow">
+  <div class="fieldset">
     <label for="email">Email:</label>
     <input id="email" type="text" th:field="*{email}" disabled />
   </div>
-  <div>
+
+  <div class="fieldset">
     <label for="firstName">First Name:</label>
     <input id="firstName" type="text" th:field="*{firstName}" />
   </div>
-  <div>
+
+  <div class="fieldset">
     <label for="lastName">Last Name:</label>
     <input id="lastName" type="text" th:field="*{lastName}" />
   </div>
-  <div>
+
+  <div class="fieldset">
     <label for="roles">Roles:</label>
     <select th:field="*{roles}" multiple="multiple" id="roles">
       <option th:each="role : ${roles}"
@@ -39,6 +43,7 @@
               th:text="${role.name}"></option>
     </select>
   </div>
+
   <button type="submit">Save Changes</button>
 </form>
 
