@@ -41,6 +41,17 @@ The most valuable thing I learnt during that project: patience.
 ---
 <a name="design"></a>
 ## 3. Design
+![Typography](https://github.com/user-attachments/assets/eea7dbad-9018-4d90-8271-2b580256f58a)
+![Colors](https://github.com/user-attachments/assets/f7955923-fe4c-4594-84d7-76f9c8131ea2)
+![Navigation](https://github.com/user-attachments/assets/14054064-68ba-455c-a0f9-14ceccebf36b)
+![Buttons](https://github.com/user-attachments/assets/81b3ef92-beb7-4887-bc2f-52d6a029fb06)
+![Inputs](https://github.com/user-attachments/assets/6c356ccb-61fe-4639-8cf4-da3642c19505)
+![Notifications](https://github.com/user-attachments/assets/9c63887a-ef4b-49ff-affa-d77d195ea40f)
+![Tables](https://github.com/user-attachments/assets/22909f28-30aa-4d43-bf85-fe70530945ba)
+
+![image](https://github.com/user-attachments/assets/3669b25f-659e-409f-9603-657e5387564d)
+![image](https://github.com/user-attachments/assets/cb584175-8952-49be-8af0-a2be3dad4eab)
+![image](https://github.com/user-attachments/assets/fed6d00a-8f6b-4d02-b620-eea8c309a3fb)
 
 
 ---
